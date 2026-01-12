@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Personal Branding – Style Guide</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --charcoal: #2D3436;
+      --sunshine: #F1C40F;
+      --warm-orange: #E17055;
+      --text-muted: #777;
+      --border: #d0d0d0;
+    }
+
+    body {
+      margin: 0;
+      padding: 40px;
+      font-family: Montserrat, sans-serif;
+      background: #fff;
+      color: #111;
+    }
+
+    .page {
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      margin: 0 0 30px;
+    }
+
+    /* LOGO GRID */
+    .logo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 40px;
+    }
+
+    .logo-column-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .logo-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .logo-circle {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .logo-svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .logo-caption {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* BOTTOM GRID */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      margin-top: 40px;
+    }
+
+    h2 {
+      margin-bottom: 16px;
+      font-size: 18px;
+    }
+
+    .colour-row {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .swatch {
+      height: 50px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .swatch.charcoal { background: var(--charcoal); }
+    .swatch.sunshine { background: var(--sunshine); }
+    .swatch.orange { background: var(--warm-orange); }
+
+    .type-sample {
+      margin-bottom: 6px;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .light { font-weight: 300; }
+    .regular { font-weight: 400; }
+    .italic { font-style: italic; }
+    .bold { font-weight: 700; }
+    .xbold { font-weight: 800; }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <div class="subtitle">Assignment 01 · Personal Branding</div>
+    <h1>Style Guide – Peter Chen</h1>
+
+    <!-- LOGOS -->
+    <div class="logo-grid">
+
+      <!-- Left Column (use SVGs as-is) -->
+      <div>
+        <div class="logo-column-title">Single Colour Logo</div>
+
+        <div class="logo-stack">
+          <div class="logo-circle">
+            <img src="1-single.svg" class="logo-svg" alt="">
+          </div>
+
+          <div class="logo-circle">
+            <img src="2-single.svg" class="logo-svg" alt="">
+          </div>
+
+          <div class="logo-circle">
+            <img src="3-single.svg" class="logo-svg" alt="">
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column (also as-is) -->
+      <div>
+        <div class="logo-column-title">Full Colour Logo</div>
+
+        <div class="logo-stack">
+          <div class="logo-circle">
+            <img src="1.svg" class="logo-svg" alt="">
+          </div>
+
+          <div class="logo-circle">
+            <img src="2.svg" class="logo-svg" alt="">
+          </div>
+
+          <div class="logo-circle">
+            <img src="3.svg" class="logo-svg" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM (colours + typeface) -->
+    <div class="bottom-grid">
+
+      <!-- Colours -->
+      <div>
+        <h2>Branding Colour(s)</h2>
+
+        <div class="colour-row">
+          <div class="swatch charcoal"></div>
+          <div>
+            <strong>Charcoal Grey</strong><br>
+            Hex: #2D3436<br>
+            RGB: 45, 52, 54
+          </div>
+        </div>
+
+        <div class="colour-row">
+          <div class="swatch sunshine"></div>
+          <div>
+            <strong>Sunshine Gold</strong><br>
+            Hex: #F1C40F<br>
+            RGB: 241, 196, 15
+          </div>
+        </div>
+
+        <div class="colour-row">
+          <div class="swatch orange"></div>
+          <div>
+            <strong>Warm Orange</strong><br>
+            Hex: #E17055<br>
+            RGB: 225, 112, 85
+          </div>
+        </div>
+      </div>
+
+      <!-- Typeface -->
+      <div>
+        <h2>Branding Typeface(s)</h2>
+
+        <p><strong>Font:</strong> Montserrat</p>
+
+        <div class="type-sample light">Montserrat Light</div>
+        <div class="type-sample regular">Montserrat Regular</div>
+        <div class="type-sample italic">Montserrat Italic</div>
+        <div class="type-sample bold">Montserrat Bold</div>
+        <div class="type-sample xbold">Montserrat Extra Bold</div>
+
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>
+
