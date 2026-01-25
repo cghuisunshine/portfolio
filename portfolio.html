@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Peter Chen | Full Stack Engineer & AI Specialist</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --charcoal: #2D3436;
+      --sunshine: #F1C40F;
+      --warm-orange: #E17055;
+      --text-muted: #777;
+      --border: #d0d0d0;
+
+      --bg-page: #ffffff;
+      --bg-section: #fafafa;
+      --shadow-soft: 0 10px 24px rgba(0, 0, 0, 0.06);
+      --radius: 14px;
+      --max-width: 1040px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Montserrat, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg-page);
+      color: var(--charcoal);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--warm-orange);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* LAYOUT */
+    .page {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 20px 18px 60px;
+    }
+
+    /* HEADER / NAV */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      height: 40px;
+      width: auto;
+      display: block;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-role {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: flex-end;
+    }
+
+    nav a {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      position: relative;
+      padding-bottom: 4px;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: var(--sunshine);
+      transition: width 0.2s ease;
+    }
+
+    nav a:hover {
+      color: var(--charcoal);
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      nav {
+        justify-content: flex-start;
+      }
+    }
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.6fr);
+      gap: 36px;
+      padding: 40px 0 24px;
+      align-items: center;
+    }
+
+    @media (max-width: 880px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .hero-kicker {
+      font-size: 11px;
+      color: var(--warm-orange);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .hero-title {
+      font-size: clamp(26px, 3vw, 32px);
+      font-weight: 800;
+      margin: 0 0 10px;
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 34rem;
+      margin-bottom: 16px;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .tag {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--charcoal);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--sunshine);
+      color: #111;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: var(--charcoal);
+      border: 1px solid var(--border);
+    }
+
+    .btn span.icon {
+      font-size: 14px;
+    }
+
+    .hero-card {
+      border-radius: var(--radius);
+      background: var(--bg-section);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      padding: 18px 18px 16px;
+    }
+
+    .hero-card-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .hero-card-pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .hero-card-main {
+      display: grid;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .hero-card-main strong {
+      color: var(--charcoal);
+    }
+
+    .hero-card-footer {
+      border-top: 1px dashed var(--border);
+      margin-top: 10px;
+      padding-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 500px) {
+      .hero-card-footer {
+        flex-direction: column;
+      }
+    }
+
+    /* SECTIONS */
+    section {
+      margin-top: 40px;
+    }
+
+    section h2 {
+      font-size: 18px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    @media (max-width: 880px) {
+      .grid-2 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      padding: 16px 16px 14px;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .card small {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--charcoal);
+      white-space: nowrap;
+    }
+
+    ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* TIMELINE */
+    .timeline {
+      position: relative;
+      padding-left: 16px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 4px;
+      bottom: 4px;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 12px;
+      margin-bottom: 14px;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -2px;
+      top: 6px;
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--warm-orange);
+      box-shadow: 0 0 0 4px rgba(225, 112, 85, 0.18);
+    }
+
+    .timeline-item h3 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .timeline-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .contact-card {
+      display: grid;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    @media (min-width: 640px) {
+      .contact-card {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    footer {
+      max-width: var(--max-width);
+      margin: 40px auto 10px;
+      padding: 0 18px 18px;
+      font-size: 11px;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(0, 0, 0, 0.04);
+      padding-top: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <div class="brand">
+      <!-- Full colour logo -->
+      <img src="2.svg" alt="Peter Chen Logo" class="brand-logo">
+      <div class="brand-text">
+        <div class="brand-name">Peter Chen</div>
+        <div class="brand-role">Full Stack · Networking · AI</div>
+      </div>
+    </div>
+
+    <nav>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page">
+  <!-- HERO -->
+  <section class="hero" id="about">
+    <div>
+      <div class="hero-kicker">Full Stack Engineer & AI Specialist</div>
+      <h1 class="hero-title">
+        Building reliable products at the intersection of networking, security, and AI.
+      </h1>
+      <p class="hero-subtitle">
+        Experienced Full Stack Engineer with over 20 years in product development, networking, and security.
+        Strong background in the mathematics behind cryptography and AI, and a proven record leading
+        new product development at Huawei and H3C.
+      </p>
+
+      <div class="hero-tags">
+        <span class="tag">Full Stack Web Development</span>
+        <span class="tag">Network &amp; Security</span>
+        <span class="tag">AI &amp; Data</span>
+        <span class="tag">Product Leadership</span>
+      </div>
+
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#experience">
+          <span class="icon">⚙️</span>
+          <span>View Experience</span>
+        </a>
+        <a class="btn btn-outline" href="#contact">
+          <span class="icon">✉️</span>
+          <span>Contact</span>
+        </a>
+      </div>
+    </div>
+
+    <aside class="hero-card" aria-label="Profile summary">
+      <div class="hero-card-header">
+        <span class="hero-card-pill">
+          <span>📍</span>
+          <span>Vancouver, BC, Canada</span>
+        </span>
+        <span>Canadian Citizen · Native Chinese · Proficient English</span>
+      </div>
+
+      <div class="hero-card-main">
+        <div>
+          <strong>Profile</strong>
+          <p>
+            • 20+ years experience in backend, networking, and security<br>
+            • Led and contributed to major product lines at H3C &amp; Huawei<br>
+            • Strong problem solving and adaptability in complex environments<br>
+            • Holder of multiple national invention patents (China)
+          </p>
+        </div>
+        <div>
+          <strong>Current Focus</strong>
+          <p>
+            Full stack web development, data and AI solutions, and secure backend systems in cloud-native environments.
+          </p>
+        </div>
+      </div>
+
+      <div class="hero-card-footer">
+        <span>Open to: Full-time &amp; project-based roles</span>
+        <span>2024&nbsp;–&nbsp;2026 · BCIT Full Stack Web Development</span>
+      </div>
+    </aside>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <h2>Skills</h2>
+    <p class="section-subtitle">
+      From low-level networking and security to modern full stack and AI tools.
+    </p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Programming &amp; Frameworks</h3>
+        <p class="section-subtitle">Languages and frameworks used in production.</p>
+        <div class="pill-row">
+          <span class="pill">Python · Django · Flask</span>
+          <span class="pill">PyTorch · TensorFlow</span>
+          <span class="pill">Java · Spring Boot</span>
+          <span class="pill">C / C++ · Linux</span>
+          <span class="pill">Node.js · Express.js</span>
+          <span class="pill">PHP</span>
+          <span class="pill">JavaScript · HTML · CSS</span>
+          <span class="pill">Vue · React</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Platforms, Databases &amp; DevOps</h3>
+        <p class="section-subtitle">Infrastructure, data, and operations.</p>
+        <div class="pill-row">
+          <span class="pill">MySQL · PostgreSQL</span>
+          <span class="pill">MongoDB</span>
+          <span class="pill">Redis</span>
+          <span class="pill">Git · Branching &amp; Merging</span>
+          <span class="pill">AWS · Azure</span>
+          <span class="pill">Docker · Kubernetes</span>
+          <span class="pill">Apache · Nginx</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Networking &amp; Security</h3>
+        <p class="section-subtitle">Deep protocol understanding and cryptography.</p>
+        <ul>
+          <li>TCP/IP, Routing, MPLS.</li>
+          <li>TLS/SSL, SSH, IPSec secure communication.</li>
+          <li>Expertise in cryptography theory and practice.</li>
+          <li>Firewall, switch, and router software development.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>AI &amp; Data</h3>
+        <p class="section-subtitle">Analytics and machine learning integration.</p>
+        <ul>
+          <li>AI theory and algorithms, with hands-on integration in backend systems.</li>
+          <li>IBM Data Analyst, Microsoft Azure Fundamentals, and NPower Data Analyst certificates.</li>
+          <li>Practical experience with experimentation and A/B testing platforms.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <h2>Experience</h2>
+    <p class="section-subtitle">
+      Two decades of engineering and product development across leading tech companies and freelance work.
+    </p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Recent Work</h3>
+        <div class="timeline">
+          <div class="timeline-item">
+            <h3>Freelancer · Full Stack &amp; iOS Developer</h3>
+            <div class="timeline-meta">Vancouver, Canada · 2020&nbsp;–&nbsp;Present</div>
+            <ul>
+              <li>Developed backend and frontend for A/B testing platforms for clients including Huawei, Sohu, and CIBC.</li>
+              <li>Designed, built, and published 12 iOS applications end-to-end.</li>
+              <li>Combined data, AI, and web technologies to deliver robust, scalable solutions.</li>
+            </ul>
+          </div>
+
+          <div class="timeline-item">
+            <h3>H3C Technology Company</h3>
+            <div class="timeline-meta">Beijing, China · 2003&nbsp;–&nbsp;2020</div>
+            <ul>
+              <li>Lead Engineer for AI and new technology initiatives.</li>
+              <li>Software Engineer &amp; Design Manager for firewall products.</li>
+              <li>Software Engineer for switch &amp; router platforms, contributing to large-scale networking solutions.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Earlier Roles &amp; Highlights</h3>
+        <div class="timeline">
+          <div class="timeline-item">
+            <h3>Huawei Technology Company</h3>
+            <div class="timeline-meta">Beijing, China · 1999&nbsp;–&nbsp;2003</div>
+            <ul>
+              <li>Software Engineer working on networking products for a global ICT provider.</li>
+              <li>Contributed to new product development during rapid company growth.</li>
+            </ul>
+          </div>
+
+          <div class="timeline-item">
+            <h3>Zhanjiang Cigarette Factory</h3>
+            <div class="timeline-meta">Zhanjiang, China · 1995&nbsp;–&nbsp;1997</div>
+            <ul>
+              <li>Mechanical &amp; Electronic System Maintenance Engineer.</li>
+              <li>Maintained and improved production systems in a high-availability environment.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 14px;">Highlights</h3>
+        <ul>
+          <li>Led and participated in multiple new product development projects at Huawei and H3C.</li>
+          <li>Contributed to the rapid growth of both companies and to technological innovation in China.</li>
+          <li>Holder of multiple national invention patents issued in China.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <h2>Education</h2>
+    <p class="section-subtitle">
+      Engineering foundation plus continuous upskilling in web, data, and cloud.
+    </p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Formal Education</h3>
+        <ul>
+          <li>
+            <strong>British Columbia Institute of Technology</strong><br>
+            Full Stack Web Development · Vancouver, Canada · 2024&nbsp;–&nbsp;2026
+          </li>
+          <li>
+            <strong>Tsinghua University</strong><br>
+            Bachelor’s Degree, Mechanics Engineering · Beijing, China · 1990&nbsp;–&nbsp;1995
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Training &amp; Certifications</h3>
+        <ul>
+          <li>IBM Data Analyst Professional Certificate</li>
+          <li>Microsoft Azure Fundamentals Professional Certificate</li>
+          <li>Junior Data Analyst Professional Certificate (NPower Canada)</li>
+          <li>Senior Software Programmer Certification (China)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <h2>Contact</h2>
+    <p class="section-subtitle">
+      Open to full-time roles and collaborations in full stack engineering, secure backend systems, data platforms, and AI-driven products.
+    </p>
+
+    <div class="card contact-card">
+      <div>
+        <strong>Email</strong><br>
+        <a href="mailto:cghui.sunshine@gmail.com">cghui.sunshine@gmail.com</a>
+      </div>
+      <div>
+        <strong>Phone</strong><br>
+        <a href="tel:+15874383825">+1&nbsp;587&nbsp;438&nbsp;3825</a>
+      </div>
+      <div>
+        <strong>Location</strong><br>
+        Vancouver, BC, Canada
+      </div>
+      <div>
+        <strong>Languages</strong><br>
+        Native Chinese · Proficient English
+      </div>
+      <!-- Optional: add GitHub / LinkedIn -->
+      <!--
+      <div>
+        <strong>GitHub</strong><br>
+        <a href="https://github.com/your-username" target="_blank" rel="noreferrer">github.com/your-username</a>
+      </div>
+      <div>
+        <strong>LinkedIn</strong><br>
+        <a href="https://www.linkedin.com/in/your-profile" target="_blank" rel="noreferrer">linkedin.com/in/your-profile</a>
+      </div>
+      -->
+    </div>
+  </section>
+</div>
+
+<footer>
+  © <span id="year"></span> Peter Chen. All rights reserved.
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</footer>
+
+</body>
+</html>
+
