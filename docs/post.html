@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Post | Demo Portfolio</title>
+    <meta name="description" content="Blog post demo page." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="bg-atmosphere" data-page="post">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="index.html">
+          <img src="assets/brand-logo.png" alt="Peter Chen logo" />
+          <span class="brand-text">
+            <span class="brand-name">Peter Chen</span>
+            <span class="brand-role">Full Stack &middot; Networking &middot; AI</span>
+          </span>
+        </a>
+        <nav class="nav" aria-label="Primary">
+          <a href="index.html">Home</a>
+          <a href="projects.html">Projects</a>
+          <a href="resume.html">Resume</a>
+          <a href="blog.html">Blog</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="page">
+      <div data-post></div>
+    </div>
+
+    <footer class="footer">
+      &copy; <span data-year></span> Peter Chen. Demo site for GitHub Pages.
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="site.js"></script>
+  </body>
+</html>

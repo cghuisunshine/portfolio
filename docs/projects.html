@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Projects | Demo Portfolio</title>
+    <meta name="description" content="Projects demo page." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="bg-atmosphere" data-page="projects">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="index.html">
+          <img src="assets/brand-logo.png" alt="Peter Chen logo" />
+          <span class="brand-text">
+            <span class="brand-name">Peter Chen</span>
+            <span class="brand-role">Full Stack &middot; Networking &middot; AI</span>
+          </span>
+        </a>
+        <nav class="nav" aria-label="Primary">
+          <a href="index.html">Home</a>
+          <a href="projects.html">Projects</a>
+          <a href="resume.html">Resume</a>
+          <a href="blog.html">Blog</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="page">
+      <section class="section">
+        <p class="kicker">Projects</p>
+        <h1 style="margin:0 0 8px;font-size:clamp(26px,3vw,34px);font-weight:800">Selected work</h1>
+        <p class="subtitle" style="margin:0 0 18px">
+          A growing collection of experiments, prototypes, and shipped products
+          (demo content).
+        </p>
+        <div class="grid grid-3" data-project-grid></div>
+      </section>
+    </div>
+
+    <footer class="footer">
+      &copy; <span data-year></span> Peter Chen. Demo site for GitHub Pages.
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="site.js"></script>
+  </body>
+</html>

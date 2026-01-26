@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contact | Demo Portfolio</title>
+    <meta name="description" content="Contact demo page." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="bg-atmosphere" data-page="contact">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="index.html">
+          <img src="assets/brand-logo.png" alt="Peter Chen logo" />
+          <span class="brand-text">
+            <span class="brand-name">Peter Chen</span>
+            <span class="brand-role">Full Stack &middot; Networking &middot; AI</span>
+          </span>
+        </a>
+        <nav class="nav" aria-label="Primary">
+          <a href="index.html">Home</a>
+          <a href="projects.html">Projects</a>
+          <a href="resume.html">Resume</a>
+          <a href="blog.html">Blog</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="page">
+      <section class="section">
+        <p class="kicker">Contact</p>
+        <h1 style="margin:0 0 8px;font-size:clamp(26px,3vw,34px);font-weight:800">Let's build together</h1>
+        <p class="subtitle" style="margin:0 0 18px">
+          This form is only a front-end demo (GitHub Pages). Use the email link
+          below to reach out.
+        </p>
+
+        <div class="grid grid-2">
+          <div class="card reveal">
+            <h3>Send a message</h3>
+            <form data-demo-form>
+              <label style="display:block;margin:0 0 10px">
+                <span class="muted" style="display:block;font-size:12px;text-transform:uppercase;letter-spacing:0.12em">Your name</span>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  style="width:100%;margin-top:6px;padding:10px 12px;border-radius:12px;border:1px solid var(--border);font:inherit"
+                />
+              </label>
+              <label style="display:block;margin:0 0 10px">
+                <span class="muted" style="display:block;font-size:12px;text-transform:uppercase;letter-spacing:0.12em">Email</span>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  style="width:100%;margin-top:6px;padding:10px 12px;border-radius:12px;border:1px solid var(--border);font:inherit"
+                />
+              </label>
+              <label style="display:block;margin:0 0 12px">
+                <span class="muted" style="display:block;font-size:12px;text-transform:uppercase;letter-spacing:0.12em">Message</span>
+                <textarea
+                  name="message"
+                  rows="5"
+                  required
+                  style="width:100%;margin-top:6px;padding:10px 12px;border-radius:12px;border:1px solid var(--border);font:inherit;resize:vertical"
+                ></textarea>
+              </label>
+              <button class="btn btn-primary" type="submit">
+                <span aria-hidden>&#9993;</span>
+                <span>Send (demo)</span>
+              </button>
+              <p class="muted" data-form-note style="margin:12px 0 0;font-size:13px"></p>
+            </form>
+          </div>
+
+          <div class="card card-muted reveal delay-1">
+            <h3>Direct contact</h3>
+            <p class="muted" style="margin:0 0 12px;font-size:13px">
+              Prefer email? You can reach me directly at
+              <a data-email-link href="mailto:cghui.sunshine@gmail.com">cghui.sunshine@gmail.com</a>.
+            </p>
+            <div class="divider-dashed muted" style="font-size:13px">
+              <p style="margin:0 0 6px"><strong style="color:var(--charcoal)">Location</strong><br>Vancouver, BC, Canada</p>
+              <p style="margin:0 0 6px"><strong style="color:var(--charcoal)">Phone</strong><br><a href="tel:+15874383825">+1 587 438 3825</a></p>
+              <p style="margin:0"><strong style="color:var(--charcoal)">LinkedIn</strong><br><a href="https://www.linkedin.com/in/peter-guanghuichen" target="_blank" rel="noreferrer">www.linkedin.com/in/peter-guanghuichen</a></p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="footer">
+      &copy; <span data-year></span> Peter Chen. Demo site for GitHub Pages.
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="site.js"></script>
+  </body>
+</html>

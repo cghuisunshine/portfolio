@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Not Found | Demo Portfolio</title>
+    <meta name="description" content="404 page for GitHub Pages." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="bg-atmosphere" data-page="404">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="index.html">
+          <img src="assets/brand-logo.png" alt="Peter Chen logo" />
+          <span class="brand-text">
+            <span class="brand-name">Peter Chen</span>
+            <span class="brand-role">Full Stack &middot; Networking &middot; AI</span>
+          </span>
+        </a>
+        <nav class="nav" aria-label="Primary">
+          <a href="index.html">Home</a>
+          <a href="projects.html">Projects</a>
+          <a href="resume.html">Resume</a>
+          <a href="blog.html">Blog</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="page">
+      <section class="hero" aria-labelledby="nf-heading">
+        <div class="reveal">
+          <div class="kicker">404</div>
+          <h1 id="nf-heading">Page not found</h1>
+          <p class="subtitle">This demo site is static. Use the navigation to continue.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="index.html">Go Home</a>
+            <a class="btn btn-outline" href="projects.html">Projects</a>
+          </div>
+        </div>
+        <aside class="card card-muted reveal delay-1" aria-label="Hint">
+          <div class="muted" style="font-size:13px">
+            Tip: if you change the URL on GitHub Pages, ensure the file exists in the `docs/` folder.
+          </div>
+        </aside>
+      </section>
+    </div>
+
+    <footer class="footer">
+      &copy; <span data-year></span> Peter Chen. Demo site for GitHub Pages.
+    </footer>
+
+    <script src="site.js"></script>
+  </body>
+</html>
