@@ -532,77 +532,81 @@
   <section id="projects">
     <h2>Projects</h2>
     <p class="section-subtitle">
-      Selected engineering projects in distributed security systems, SDN platforms, firewall kernel development, and carrier-grade routing technologies.
+      Selected engineering projects in network security, SDN platforms, and carrier-grade routing systems.
     </p>
 
     <div class="grid-2">
+
       <!-- Project 1 -->
       <div class="card">
         <h3>Distributed DDoS Traffic Steering and Scrubbing System</h3>
         <small>Anti-DDoS · Traffic Engineering · Enterprise Networks</small>
-        <ul>
-          <li>Designed a distributed DDoS traffic steering and scrubbing solution for small and medium-sized enterprise networks.</li>
-          <li>Supported inline deployment at network egress, enabling real-time bidirectional traffic protection.</li>
-          <li>Implemented static and dynamic traffic steering mechanisms triggered by attack detection.</li>
-          <li>Mitigated volumetric, protocol-based, and connection-exhaustion DDoS attacks.</li>
-        </ul>
-        <div class="pill-row">
-          <span class="pill">Inline Deployment</span>
-          <span class="pill">Traffic Steering</span>
-          <span class="pill">DDoS Scrubbing</span>
-        </div>
+
+        <p><strong>Problem</strong><br>
+          Deliver effective DDoS protection for small and medium-sized enterprise networks while minimizing topology changes and operational complexity.
+        </p>
+
+        <p><strong>Challenges</strong><br>
+          Providing real-time mitigation at the network edge, supporting both continuous and on-demand protection, and handling diverse attack types without impacting legitimate traffic.
+        </p>
+
+        <p><strong>Solutions</strong><br>
+          An inline gateway-based design enabled transparent, bidirectional protection. Static and dynamic traffic steering were combined to activate scrubbing based on attack detection, reducing operational overhead while maintaining service availability.
+        </p>
       </div>
 
       <!-- Project 2 -->
       <div class="card">
-        <h3>SDN Product Development (AD-NET)</h3>
+        <h3>H3C SDN Product Development (AD-NET Platform)</h3>
         <small>SDN · Controller · Network Automation</small>
-        <ul>
-          <li>Contributed to SDN product development within the AD-NET architecture.</li>
-          <li>Supported controller-based orchestration across campus, WAN, and data center environments.</li>
-          <li>Worked on policy delivery, network telemetry, and automated service provisioning.</li>
-          <li>Collaborated with routing, switching, and security teams to ensure end-to-end consistency.</li>
-        </ul>
-        <div class="pill-row">
-          <span class="pill">SDN Controller</span>
-          <span class="pill">AD-WAN</span>
-          <span class="pill">AD-Campus</span>
-        </div>
+
+        <p><strong>Problem</strong><br>
+          Enable centralized and scalable network management across campus, WAN, and data center environments.
+        </p>
+
+        <p><strong>Challenges</strong><br>
+          Maintaining policy consistency across heterogeneous networks, automating provisioning safely, and improving operational visibility.
+        </p>
+
+        <p><strong>Solutions</strong><br>
+          A controller-based SDN architecture centralized policy orchestration and automated service delivery. Telemetry and analytics improved visibility while close integration with device platforms ensured stability.
+        </p>
       </div>
 
       <!-- Project 3 -->
       <div class="card">
         <h3>Firewall Kernel-Level Feature Development</h3>
         <small>Firewall · Kernel · High-Performance Dataplane</small>
-        <ul>
-          <li>Developed firewall features at the kernel and dataplane level for enterprise security gateways.</li>
-          <li>Implemented stateful packet inspection, session tracking, and NAT mechanisms.</li>
-          <li>Enhanced application-aware processing, including encrypted traffic handling.</li>
-          <li>Focused on stability, performance optimization, and reliability under high concurrency.</li>
-        </ul>
-        <div class="pill-row">
-          <span class="pill">Kernel Networking</span>
-          <span class="pill">Stateful Inspection</span>
-          <span class="pill">NAT</span>
-        </div>
+
+        <p><strong>Problem</strong><br>
+          Enhance firewall capabilities to support high-throughput, application-aware security processing in enterprise environments.
+        </p>
+
+        <p><strong>Challenges</strong><br>
+          Preserving performance under high concurrency, managing large numbers of sessions, and handling encrypted application traffic.
+        </p>
+
+        <p><strong>Solutions</strong><br>
+          Kernel-level dataplane implementations minimized latency and overhead. Optimized stateful inspection and session tracking enabled scalable performance while maintaining system stability.
+        </p>
       </div>
 
       <!-- Project 4 -->
       <div class="card">
-        <h3>MPLS-TE Feature Development Supporting Up to 256 Nodes</h3>
+        <h3>MPLS Traffic Engineering (MPLS-TE) Feature Development</h3>
         <small>MPLS · Traffic Engineering · Carrier-Grade Routing</small>
-        <ul>
-          <li>Developed MPLS Traffic Engineering (MPLS-TE) features for large-scale IP/MPLS networks.</li>
-          <li>Supported network topologies with up to 256 nodes, focusing on scalability and convergence performance.</li>
-          <li>Implemented constraint-based path computation and bandwidth-aware label-switched path (LSP) establishment.</li>
-          <li>Optimized signaling, resource reservation, and failure recovery mechanisms.</li>
-        </ul>
-        <div class="pill-row">
-          <span class="pill">MPLS-TE</span>
-          <span class="pill">RSVP-TE</span>
-          <span class="pill">CSPF</span>
-          <span class="pill">Scalability &amp; Convergence</span>
-        </div>
+
+        <p><strong>Problem</strong><br>
+          Provide scalable traffic engineering capabilities for large IP/MPLS networks.
+        </p>
+
+        <p><strong>Challenges</strong><br>
+          Scaling control-plane operations to support up to 256 nodes, computing constraint-based paths efficiently, and ensuring fast convergence.
+        </p>
+
+        <p><strong>Solutions</strong><br>
+          CSPF-based path computation combined with RSVP-TE signaling enabled scalable LSP establishment. Control-plane optimizations ensured predictable performance and reliable recovery in large topologies.
+        </p>
       </div>
     </div>
   </section>
