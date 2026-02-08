@@ -511,7 +511,7 @@ Node/Express + Socket.IO
           <li><strong>Assets pipeline (MongoDB + GridFS):</strong> implemented/used a split strategy where small assets come from a MongoDB collection and larger assets stream from GridFS, served through the Express <code>/assets/*</code> route.</li>
           <li><strong>Redis preload for quick access:</strong> preloaded critical assets into Redis on server start to reduce initial loading stalls and speed up repeat fetches.</li>
           <li><strong>Board state synchronization:</strong> kept all clients consistent by emitting server snapshots (<code>gameState</code>) and movement/turn events, with periodic sync to recover from missed updates.</li>
-          <li><strong>Route fork interaction + movement:</strong> built the fork/branch flow where a dice move can pause on a fork, prompt the player to choose a route, then continue remaining steps while keeping everyone synchronized.</li>
+          <li><strong>Player movement on board + route forks:</strong> implemented dice-based board movement, including the fork/branch flow where a move can pause on a fork, prompt the player to choose a route, then continue remaining steps while keeping everyone synchronized.</li>
           <li><strong>Dice-driven gameplay:</strong> implemented dice rolling as the core input for movement and battles (player-vs-player collisions and the boss fight at the end of the board).</li>
           <li><strong>Demo deployment:</strong> deployed and validated the live demo at <a href="http://commandz.gochatus.org:30006/" target="_blank" rel="noreferrer">commandz.gochatus.org:30006</a>.</li>
         </ul>
