@@ -307,6 +307,14 @@
       letter-spacing: 0.16em;
     }
 
+    .subsection-title {
+      margin: 14px 0 10px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
     .section-subtitle {
       font-size: 13px;
       color: var(--text-muted);
@@ -317,6 +325,101 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px;
+    }
+
+    /* PROJECTS CAROUSEL */
+    .projects-carousel {
+      position: relative;
+    }
+
+    .carousel-track {
+      display: flex;
+      gap: 18px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      padding: 2px 2px 10px;
+      margin: 0;
+      border-radius: calc(var(--radius) + 2px);
+    }
+
+    .carousel-track:focus {
+      outline: 2px solid rgba(225, 112, 85, 0.35);
+      outline-offset: 3px;
+    }
+
+    .carousel-track::-webkit-scrollbar {
+      height: 10px;
+    }
+    .carousel-track::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.12);
+      border-radius: 999px;
+    }
+    .carousel-track {
+      scrollbar-width: thin;
+    }
+
+    .carousel-slide {
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+    }
+
+    .carousel-controls {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .carousel-btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--charcoal);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-family: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .carousel-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .carousel-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.12);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .carousel-dot[aria-current="true"] {
+      background: var(--warm-orange);
+      border-color: rgba(0, 0, 0, 0.15);
+      box-shadow: 0 0 0 4px rgba(225, 112, 85, 0.18);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .carousel-track {
+        scroll-behavior: auto;
+      }
     }
 
     @media (max-width: 880px) {
@@ -535,10 +638,13 @@
       Selected engineering projects in network security, SDN platforms, and carrier-grade routing systems.
     </p>
 
-    <div class="grid-2">
+    <h3 class="subsection-title">Professional Projects</h3>
+
+    <div class="projects-carousel" aria-label="Projects carousel">
+      <div class="carousel-track" tabindex="0" aria-label="Project slides">
 
       <!-- Project 1 -->
-      <div class="card">
+      <div class="card carousel-slide">
         <h3>Distributed DDoS Traffic Steering and Scrubbing System</h3>
         <small>Anti-DDoS · Traffic Engineering · Enterprise Networks</small>
 
@@ -556,7 +662,7 @@
       </div>
 
       <!-- Project 2 -->
-      <div class="card">
+      <div class="card carousel-slide">
       <h3>SDN Product Development (AD-NET Platform)</h3>
         <small>SDN · Controller · Network Automation</small>
 
@@ -574,7 +680,7 @@
       </div>
 
       <!-- Project 3 -->
-      <div class="card">
+      <div class="card carousel-slide">
         <h3>Firewall Kernel-Level Feature Development</h3>
         <small>Firewall · Kernel · High-Performance Dataplane</small>
 
@@ -592,7 +698,7 @@
       </div>
 
       <!-- Project 4 -->
-      <div class="card">
+      <div class="card carousel-slide">
         <h3>MPLS Traffic Engineering (MPLS-TE) Feature Development</h3>
         <small>MPLS · Traffic Engineering · Carrier-Grade Routing</small>
 
@@ -608,6 +714,23 @@
           CSPF-based path computation combined with RSVP-TE signaling enabled scalable LSP establishment. Control-plane optimizations ensured predictable performance and reliable recovery in large topologies.
         </p>
       </div>
+
+      </div>
+
+      <div class="carousel-controls" aria-label="Carousel controls">
+        <button class="carousel-btn" type="button" data-carousel-prev aria-label="Previous project">Prev</button>
+        <button class="carousel-btn" type="button" data-carousel-next aria-label="Next project">Next</button>
+      </div>
+
+      <div class="carousel-dots" data-carousel-dots aria-label="Project navigation dots"></div>
+    </div>
+
+    <h3 class="subsection-title" id="school-projects">School Projects</h3>
+    <div class="card">
+      <p class="section-subtitle" style="margin-bottom: 12px;">
+        School projects are listed on a separate page.
+      </p>
+      <a class="btn btn-outline" href="SchoolProjects.html">View School Projects</a>
     </div>
   </section>
 
@@ -806,6 +929,142 @@
   © <span id="year"></span> Peter Chen. All rights reserved.
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    (function initProjectsCarousel() {
+      var root = document.querySelector('#projects .projects-carousel');
+      if (!root) return;
+
+      var track = root.querySelector('.carousel-track');
+      var slides = Array.prototype.slice.call(root.querySelectorAll('.carousel-slide'));
+      var btnPrev = root.querySelector('[data-carousel-prev]');
+      var btnNext = root.querySelector('[data-carousel-next]');
+      var dotsWrap = root.querySelector('[data-carousel-dots]');
+      if (!track || slides.length === 0 || !btnPrev || !btnNext || !dotsWrap) return;
+
+      var activeIndex = 0;
+      var dots = [];
+
+      function clamp(n, min, max) {
+        return Math.max(min, Math.min(max, n));
+      }
+
+      function scrollToIndex(index, behavior) {
+        activeIndex = clamp(index, 0, slides.length - 1);
+        slides[activeIndex].scrollIntoView({
+          behavior: behavior || 'smooth',
+          block: 'nearest',
+          inline: 'start'
+        });
+        updateUI();
+      }
+
+      function updateUI() {
+        btnPrev.disabled = activeIndex <= 0;
+        btnNext.disabled = activeIndex >= slides.length - 1;
+
+        for (var i = 0; i < dots.length; i++) {
+          var isActive = i === activeIndex;
+          dots[i].setAttribute('aria-current', isActive ? 'true' : 'false');
+          dots[i].setAttribute('tabindex', isActive ? '0' : '-1');
+        }
+      }
+
+      // Build dots
+      dotsWrap.innerHTML = '';
+      for (var i = 0; i < slides.length; i++) {
+        (function(idx) {
+          var dot = document.createElement('button');
+          dot.type = 'button';
+          dot.className = 'carousel-dot';
+          dot.setAttribute('aria-label', 'Go to project ' + (idx + 1));
+          dot.addEventListener('click', function() {
+            scrollToIndex(idx);
+          });
+          dotsWrap.appendChild(dot);
+          dots.push(dot);
+        })(i);
+      }
+
+      btnPrev.addEventListener('click', function() {
+        scrollToIndex(activeIndex - 1);
+      });
+      btnNext.addEventListener('click', function() {
+        scrollToIndex(activeIndex + 1);
+      });
+
+      // Keyboard support on the track
+      track.addEventListener('keydown', function(e) {
+        var key = e.key;
+        if (key === 'ArrowLeft') {
+          e.preventDefault();
+          scrollToIndex(activeIndex - 1);
+        } else if (key === 'ArrowRight') {
+          e.preventDefault();
+          scrollToIndex(activeIndex + 1);
+        } else if (key === 'Home') {
+          e.preventDefault();
+          scrollToIndex(0);
+        } else if (key === 'End') {
+          e.preventDefault();
+          scrollToIndex(slides.length - 1);
+        }
+      });
+
+      // Sync active slide for manual scrolling/swiping
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(
+          function(entries) {
+            var best = null;
+            for (var j = 0; j < entries.length; j++) {
+              var ent = entries[j];
+              if (!best || ent.intersectionRatio > best.intersectionRatio) {
+                best = ent;
+              }
+            }
+            if (!best) return;
+            if (best.intersectionRatio < 0.6) return;
+            var idx = slides.indexOf(best.target);
+            if (idx !== -1 && idx !== activeIndex) {
+              activeIndex = idx;
+              updateUI();
+            }
+          },
+          {
+            root: track,
+            threshold: [0.6, 0.75, 0.9]
+          }
+        );
+        for (var k = 0; k < slides.length; k++) io.observe(slides[k]);
+      } else {
+        var rafId = 0;
+        track.addEventListener('scroll', function() {
+          if (rafId) return;
+          rafId = window.requestAnimationFrame(function() {
+            rafId = 0;
+            var trackRect = track.getBoundingClientRect();
+            var bestIdx = 0;
+            var bestDist = Infinity;
+            for (var m = 0; m < slides.length; m++) {
+              var rect = slides[m].getBoundingClientRect();
+              var dist = Math.abs(rect.left - trackRect.left);
+              if (dist < bestDist) {
+                bestDist = dist;
+                bestIdx = m;
+              }
+            }
+            if (bestIdx !== activeIndex) {
+              activeIndex = bestIdx;
+              updateUI();
+            }
+          });
+        });
+      }
+
+      // Start
+      updateUI();
+      // Ensure snap starts at first slide even if browser restores scroll
+      scrollToIndex(0, 'auto');
+    })();
   </script>
 </footer>
 
