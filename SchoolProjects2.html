@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>School Projects | Panday | Peter Chen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --charcoal: #11203d;
+      --navy: #1d2a52;
+      --navy-deep: #09132b;
+      --sunshine: #ff9b2f;
+      --warm-orange: #f28d24;
+      --text-muted: #6a7387;
+      --border: #d8dfeb;
+
+      --bg-page: #ffffff;
+      --bg-section: #f7f9fc;
+      --shadow-soft: 0 12px 28px rgba(8, 18, 44, 0.10);
+      --radius: 14px;
+      --max-width: 1040px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Times New Roman", Times, serif;
+      background: var(--bg-page);
+      color: var(--charcoal);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--warm-orange);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-name {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-role {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .page {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 20px 18px 60px;
+    }
+
+    section {
+      margin-top: 30px;
+    }
+
+    section h1 {
+      font-size: 22px;
+      margin: 0 0 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    section h2 {
+      font-size: 16px;
+      margin: 0 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      padding: 16px 16px 14px;
+    }
+
+    .hero {
+      border-radius: calc(var(--radius) + 4px);
+      overflow: hidden;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      box-shadow: var(--shadow-soft);
+      background:
+        radial-gradient(circle at top right, rgba(255, 155, 47, 0.24), transparent 28%),
+        radial-gradient(circle at left bottom, rgba(52, 78, 143, 0.26), transparent 32%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(245, 248, 255, 0.96)),
+        linear-gradient(135deg, var(--navy-deep), var(--navy));
+      color: var(--charcoal);
+      padding: 18px;
+    }
+
+    .hero-kicker {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 155, 47, 0.40);
+      background: rgba(255, 155, 47, 0.10);
+      color: var(--charcoal);
+      margin-bottom: 10px;
+    }
+
+    .hero-title {
+      font-size: 26px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      margin: 6px 0 8px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 14px;
+      align-items: start;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 860px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .hero-shot {
+      border-radius: var(--radius);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: rgba(255, 255, 255, 0.84);
+      padding: 10px;
+    }
+
+    .hero-shot img,
+    .hero-shot video {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: calc(var(--radius) - 4px);
+    }
+
+    .hero-shot-caption {
+      font-size: 12px;
+      color: rgba(17, 32, 61, 0.78);
+      margin-top: 8px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(17, 32, 61, 0.10);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--charcoal);
+      white-space: nowrap;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    @media (max-width: 880px) {
+      .grid-2 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .project-title {
+      margin: 0 0 6px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .project-meta {
+      color: var(--text-muted);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--sunshine);
+      color: #111;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: var(--charcoal);
+      border: 1px solid var(--border);
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .feature-list,
+    .detail-list {
+      margin: 8px 0 0 18px;
+      padding: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .feature-list li,
+    .detail-list li {
+      margin-bottom: 6px;
+    }
+
+    pre {
+      margin: 0;
+      padding: 12px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: #fff;
+      overflow: auto;
+      font-size: 12px;
+      color: var(--charcoal);
+    }
+
+    footer {
+      max-width: var(--max-width);
+      margin: 40px auto 10px;
+      padding: 0 18px 18px;
+      font-size: 11px;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(0, 0, 0, 0.04);
+      padding-top: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="nav-inner">
+      <div class="brand">
+        <div>
+          <div class="brand-name">Peter Chen</div>
+          <div class="brand-role">School Projects</div>
+        </div>
+      </div>
+
+      <nav>
+        <a class="btn btn-outline" href="#how-it-works">How It Works</a>
+        <a class="btn btn-outline" href="#build-details">Build Details</a>
+        <a class="btn btn-outline" href="portfolio.html#projects">Back to Portfolio</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page">
+    <section>
+      <div class="hero" aria-label="School projects hero">
+        <span class="hero-kicker">BCIT · Term Projects</span>
+        <div class="hero-title">School Projects</div>
+        <p class="section-subtitle" style="color: rgba(17, 32, 61, 0.82); margin-bottom: 0;">
+          Featured build: Panday, a roadmap-based web app that helps users plan skilled-trades pathways in British Columbia.
+        </p>
+
+        <div class="hero-grid">
+          <div>
+            <h1 style="margin: 0; font-size: 18px; letter-spacing: 0.14em;">Panday</h1>
+            <p class="section-subtitle" style="color: rgba(17, 32, 61, 0.84); margin-bottom: 8px;">
+              A Next.js product that combines visual career roadmaps, source-grounded AI guidance, and progress tracking in one place.
+            </p>
+            <div class="pill-row" aria-label="Tech stack pills">
+              <span class="pill">Next.js 15</span>
+              <span class="pill">React 19</span>
+              <span class="pill">TypeScript</span>
+              <span class="pill">Bun</span>
+              <span class="pill">PostgreSQL</span>
+              <span class="pill">Prisma</span>
+              <span class="pill">Clerk</span>
+              <span class="pill">React Flow</span>
+              <span class="pill">Tailwind CSS</span>
+              <span class="pill">Vitest</span>
+            </div>
+            <div class="btn-row">
+              <a class="btn btn-primary" href="https://github.com/panday-team/panday" target="_blank" rel="noreferrer">View Source</a>
+              <a class="btn btn-outline" href="https://panday.app/" target="_blank" rel="noreferrer">Open Live Demo</a>
+              <a class="btn btn-outline" href="#how-it-works">How It Works</a>
+              <a class="btn btn-outline" href="#build-details">Build Details</a>
+              <a class="btn btn-outline" href="portfolio.html#school-projects">Back to Projects</a>
+            </div>
+          </div>
+
+          <div class="hero-shot">
+            <img src="panday.png" alt="Panday landing page screenshot" />
+            <div class="hero-shot-caption">Landing page capture showing the core product message and trade-path onboarding.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how-it-works" aria-label="How it works section">
+      <h2>How It Works</h2>
+      <p class="section-subtitle">
+        Panday turns a complex apprenticeship journey into a guided product flow that is easier to understand and act on.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="project-title">Product Flow</div>
+          <div class="project-meta">From entry path to next milestone</div>
+          <div class="btn-row" style="margin-top: 0;">
+            <a class="btn btn-primary" href="https://panday.app/" target="_blank" rel="noreferrer">Open Live Demo</a>
+          </div>
+          <ol class="feature-list">
+            <li>Choose a current level or entry path to personalize the roadmap immediately.</li>
+            <li>Open roadmap nodes to see requirements, eligibility details, and next actions.</li>
+            <li>Ask the AI assistant questions in context while viewing the roadmap.</li>
+            <li>Review source-backed answers tied to official documents and guidance.</li>
+            <li>Track checklist completion, notes, and saved progress over time.</li>
+            <li>Return later and continue from the same point with history preserved.</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <div class="project-title">Core Product Highlights</div>
+          <div class="project-meta">What makes the app useful</div>
+          <ul class="detail-list">
+            <li><strong>Interactive visual roadmap:</strong> shows the full path from entry through apprenticeship milestones to Red Seal.</li>
+            <li><strong>Context-aware AI chat:</strong> answers questions while users stay inside the roadmap experience.</li>
+            <li><strong>Grounded responses:</strong> AI output is backed by official BC trades and government resources.</li>
+            <li><strong>Custom nodes:</strong> users can add reminders, notes, and checklist items near relevant milestones.</li>
+            <li><strong>Progress continuity:</strong> chat history, profile state, and completion tracking keep momentum between sessions.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="build-details" aria-label="Build details section">
+      <h2>Build Details</h2>
+      <p class="section-subtitle">
+        Tech stack, architecture, and the product systems behind the roadmap, AI assistance, and persistent user progress.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="project-title">Frontend</div>
+          <div class="project-meta">Product UI and interaction layer</div>
+          <ul class="detail-list">
+            <li>Next.js 15 App Router with React 19 and TypeScript.</li>
+            <li>React Flow renders the node-based roadmap canvas and custom milestone components.</li>
+            <li>Tailwind CSS and shadcn/ui support the interface styling and reusable UI patterns.</li>
+            <li>Landing pages, guided demo pages, chat panels, and roadmap views are organized as app routes and components.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="project-title">Backend + Data</div>
+          <div class="project-meta">Persistence, auth, and AI support</div>
+          <ul class="detail-list">
+            <li>PostgreSQL with Prisma stores application data and user-linked state.</li>
+            <li>Clerk handles authentication and user-scoped access control.</li>
+            <li>Vercel AI SDK connects AI providers for chat experiences.</li>
+            <li>Hybrid retrieval combines embeddings and structured content so answers can cite relevant source material.</li>
+            <li>Vitest covers automated testing, while Zod validates inputs at API boundaries.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 18px;">
+        <div class="card">
+          <div class="project-title">Architecture</div>
+          <div class="project-meta">Roadmap content + grounded AI workflow</div>
+          <pre><code>User Browser
+  |
+  |  Next.js routes (landing / demo / roadmap)
+  v
+React UI + React Flow canvas
+  - roadmap nodes
+  - chat interface
+  - checklist and profile state
+  |
+  |  API requests
+  v
+Next.js route handlers
+  - chat
+  - threads
+  - profile
+  - faq / status
+  |
+  +-> Prisma + PostgreSQL
+  |     - users, threads, progress data
+  |
+  +-> embeddings + structured roadmap content
+  |     - source retrieval for grounded answers
+  |
+  +-> AI providers via Vercel AI SDK
+        - streamed responses with citations</code></pre>
+        </div>
+
+        <div class="card">
+          <div class="project-title">Engineering Notes</div>
+          <div class="project-meta">Repo structure and operational details</div>
+          <ul class="detail-list">
+            <li>The repo separates roadmap content, node rendering, chat logic, and API handlers into focused folders.</li>
+            <li>Bun is used for local workflows, development commands, and build scripts.</li>
+            <li>Prisma migrations and generated clients support database schema changes and runtime access.</li>
+            <li>Health diagnostics and rate limiting help protect key services and external API usage.</li>
+            <li>Supporting docs cover roadmap generation, auto-layout, and local setup.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 18px;">
+        <div class="project-title">Project Value</div>
+        <div class="project-meta">Why this build stands out</div>
+        <ul class="detail-list">
+          <li><strong>Clear information design:</strong> the roadmap format turns scattered requirements into a single visual path.</li>
+          <li><strong>Useful AI integration:</strong> the chatbot is not just conversational; it is grounded in source documents and tied to user context.</li>
+          <li><strong>Persistent progress:</strong> saved threads, checklists, and profile data make the product practical beyond a one-time demo.</li>
+          <li><strong>Modern full-stack implementation:</strong> the app combines contemporary React architecture, typed APIs, auth, persistence, and testing.</li>
+          <li><strong>Real user focus:</strong> the experience is built around helping students and apprentices understand what to do now and what comes next.</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    &copy; <span id="year"></span> Peter Chen. All rights reserved.
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </footer>
+</body>
+</html>
