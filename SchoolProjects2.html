@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>School Projects | Panday | Peter Chen</title>
+  <title>Panday | Peter Chen</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
@@ -315,7 +315,7 @@
       <div class="brand">
         <div>
           <div class="brand-name">Peter Chen</div>
-          <div class="brand-role">School Projects</div>
+          <div class="brand-role">Panday</div>
         </div>
       </div>
 
@@ -329,9 +329,8 @@
 
   <div class="page">
     <section>
-      <div class="hero" aria-label="School projects hero">
+      <div class="hero" aria-label="Panday hero">
         <span class="hero-kicker">BCIT · Term Projects</span>
-        <div class="hero-title">School Projects</div>
         <p class="section-subtitle" style="color: rgba(17, 32, 61, 0.82); margin-bottom: 0;">
           Featured build: Panday, a roadmap-based web app that helps users plan skilled-trades pathways in British Columbia.
         </p>
@@ -484,14 +483,18 @@ Next.js route handlers
       </div>
 
       <div class="card" style="margin-top: 18px;">
-        <div class="project-title">Project Value</div>
-        <div class="project-meta">Why this build stands out</div>
+        <div class="project-title">My Role (Key Contributions)</div>
+        <div class="project-meta">AI-related product features and supporting systems</div>
         <ul class="detail-list">
-          <li><strong>Clear information design:</strong> the roadmap format turns scattered requirements into a single visual path.</li>
-          <li><strong>Useful AI integration:</strong> the chatbot is not just conversational; it is grounded in source documents and tied to user context.</li>
-          <li><strong>Persistent progress:</strong> saved threads, checklists, and profile data make the product practical beyond a one-time demo.</li>
-          <li><strong>Modern full-stack implementation:</strong> the app combines contemporary React architecture, typed APIs, auth, persistence, and testing.</li>
-          <li><strong>Real user focus:</strong> the experience is built around helping students and apprentices understand what to do now and what comes next.</li>
+          <li><strong>Source-grounded AI chat:</strong> helped shape a chat experience that answers user questions in context while grounding responses in official trades and government resources instead of generic free-form output.</li>
+          <li><strong>RAG pipeline design:</strong> supported an architecture where user queries are matched against roadmap content through embeddings retrieval, then injected into the AI prompt so answers can stay relevant to the selected roadmap and node content.</li>
+          <li><strong>Embeddings system:</strong> the project includes a hybrid embeddings backend with JSON and Postgres/pgvector support, allowing semantic search over roadmap documents and better scaling as content grows.</li>
+          <li><strong>Personalized AI context:</strong> user profile data such as current level can be injected into the system prompt so the assistant responds with guidance that better matches the user&apos;s stage in the apprenticeship journey.</li>
+          <li><strong>Source citations and previews:</strong> AI responses can surface filtered sources, hover previews, excerpts, and direct roadmap links so users can inspect where guidance came from.</li>
+          <li><strong>Streaming multi-provider AI setup:</strong> the app uses the Vercel AI SDK with multiple providers and streams responses back into the UI, making the chat feel faster and more product-like.</li>
+          <li><strong>Persistent AI conversations:</strong> chat threads, messages, previews, and saved citations are persisted so users can return to earlier AI conversations instead of losing the interaction after one session.</li>
+          <li><strong>FAQ generation pipeline:</strong> past AI chat sessions can be processed into extracted Q&amp;A pairs, clustered semantically, and consolidated into reusable FAQ content for future users.</li>
+          <li><strong>AI reliability safeguards:</strong> rate limiting, input validation, request timeouts, and user-scoped access control help keep the AI features safer, more stable, and less noisy in production.</li>
         </ul>
       </div>
     </section>
