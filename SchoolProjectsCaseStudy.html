@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bandit Breakout Case Study | Peter Chen</title>
+  <meta
+    name="description"
+    content="Case study for Bandit Breakout, a BCIT term project exploring stack research, a pivot from React and Next.js to Phaser, and the delivery of a realtime multiplayer browser game."
+  />
+
+  <style>
+    :root {
+      --charcoal: #2d3436;
+      --ink-deep: #141127;
+      --night: #040218;
+      --sunshine: #f1c40f;
+      --warm-orange: #e17055;
+      --sand: #f6efe1;
+      --mist: #f5f5f2;
+      --paper: #ffffff;
+      --text-muted: #6d6d6d;
+      --border: #d9d4cb;
+      --border-strong: rgba(241, 196, 15, 0.28);
+      --shadow-soft: 0 14px 32px rgba(0, 0, 0, 0.08);
+      --shadow-deep: 0 24px 54px rgba(4, 2, 24, 0.18);
+      --radius: 18px;
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Times New Roman", Times, serif;
+      color: var(--charcoal);
+      line-height: 1.65;
+      background:
+        radial-gradient(circle at top left, rgba(241, 196, 15, 0.1), transparent 28%),
+        linear-gradient(180deg, #fffdf8 0%, #fff 25%, #f9f7f2 100%);
+    }
+
+    a {
+      color: var(--warm-orange);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    img,
+    video {
+      max-width: 100%;
+      display: block;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: rgba(255, 253, 248, 0.92);
+      border-bottom: 1px solid rgba(20, 17, 39, 0.06);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-name {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-role {
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .page {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 24px 20px 72px;
+    }
+
+    section {
+      margin-top: 34px;
+      scroll-margin-top: 86px;
+    }
+
+    h1,
+    h2,
+    h3,
+    p,
+    ul,
+    ol,
+    pre {
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: 32px;
+      line-height: 1.1;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 19px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+      letter-spacing: 0.04em;
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .hero {
+      overflow: hidden;
+      border-radius: 26px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      color: var(--charcoal);
+      background:
+        radial-gradient(circle at top right, rgba(241, 196, 15, 0.16), transparent 30%),
+        linear-gradient(180deg, #fffdf7 0%, #fbf7ee 52%, #f8f2e6 100%);
+      padding: 26px;
+    }
+
+    .hero-kicker,
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      border: 1px solid rgba(241, 196, 15, 0.34);
+      background: rgba(241, 196, 15, 0.14);
+      color: var(--ink-deep);
+    }
+
+    .hero-intro {
+      max-width: 720px;
+      color: rgba(45, 52, 54, 0.88);
+      margin-bottom: 0;
+    }
+
+    .hero-grid,
+    .grid-2,
+    .grid-3 {
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero-grid {
+      grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.9fr);
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card,
+    .fact-card,
+    .hero-panel,
+    .timeline-card,
+    .shot,
+    .process-step {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card,
+    .fact-card,
+    .timeline-card,
+    .process-step {
+      padding: 18px;
+    }
+
+    .hero-panel {
+      background: linear-gradient(180deg, #fff 0%, #fbf7ef 100%);
+      border-color: rgba(20, 17, 39, 0.08);
+      color: var(--charcoal);
+      padding: 16px;
+    }
+
+    .hero-panel p,
+    .hero-panel li,
+    .hero-panel .meta-line {
+      color: var(--text-muted);
+    }
+
+    .hero-shot {
+      background: linear-gradient(180deg, #fff 0%, #f9f5ec 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 12px;
+    }
+
+    .hero-shot img {
+      border-radius: 14px;
+      border: 1px solid rgba(20, 17, 39, 0.08);
+    }
+
+    .hero-shot-caption,
+    .caption {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 10px;
+    }
+
+    .caption {
+      color: var(--text-muted);
+    }
+
+    .pill-row,
+    .btn-row,
+    .fact-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill,
+    .stat-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid rgba(20, 17, 39, 0.08);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--charcoal);
+      white-space: nowrap;
+    }
+
+    .fact-list {
+      margin-top: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--sunshine);
+      color: #1b170a;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: var(--charcoal);
+      border-color: var(--border);
+    }
+
+    .btn-soft {
+      background: #fff;
+      color: var(--charcoal);
+      border-color: var(--border);
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .meta-line {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+
+    .meta-value {
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .facts-strip {
+      margin-top: -18px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .fact-card {
+      background: linear-gradient(180deg, #fff 0%, #fbf8f2 100%);
+    }
+
+    .fact-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .fact-value {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .feature-list,
+    .detail-list,
+    .process-list,
+    .outcome-list {
+      margin: 10px 0 0 18px;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .feature-list li,
+    .detail-list li,
+    .process-list li,
+    .outcome-list li {
+      margin-bottom: 8px;
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .step-number {
+      display: inline-flex;
+      width: 34px;
+      height: 34px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink-deep);
+      background: rgba(241, 196, 15, 0.18);
+      border: 1px solid var(--border-strong);
+      margin-bottom: 12px;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 14px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 18px;
+      top: 10px;
+      bottom: 10px;
+      width: 1px;
+      background: linear-gradient(180deg, rgba(241, 196, 15, 0.8), rgba(225, 112, 85, 0.4));
+    }
+
+    .timeline-card {
+      position: relative;
+      padding-left: 54px;
+      background: linear-gradient(180deg, #fff 0%, #fcfaf5 100%);
+    }
+
+    .timeline-card::before {
+      content: "";
+      position: absolute;
+      left: 13px;
+      top: 22px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--sunshine);
+      box-shadow: 0 0 0 5px rgba(241, 196, 15, 0.15);
+    }
+
+    .timeline-kicker,
+    .card-kicker {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .section-banner {
+      padding: 22px;
+      border-radius: 24px;
+      color: var(--charcoal);
+      background:
+        radial-gradient(circle at top right, rgba(241, 196, 15, 0.14), transparent 26%),
+        linear-gradient(180deg, #fff 0%, #faf5ea 100%);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .comparison-grid,
+    .gallery {
+      display: grid;
+      gap: 14px;
+    }
+
+    .comparison-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gallery {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .shot {
+      overflow: hidden;
+    }
+
+    .shot img,
+    .shot video {
+      width: 100%;
+      height: auto;
+    }
+
+    .shot figcaption {
+      padding: 12px 14px 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .shot-wide {
+      grid-column: 1 / -1;
+    }
+
+    .quote-card {
+      padding: 18px;
+      border-left: 4px solid var(--sunshine);
+      background: linear-gradient(180deg, #fffdf7 0%, #f8f3ea 100%);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      font-size: 15px;
+    }
+
+    pre {
+      margin-bottom: 0;
+      padding: 14px;
+      overflow: auto;
+      border-radius: 14px;
+      background: #1c1832;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #f5f1e8;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    footer {
+      max-width: var(--max-width);
+      margin: 46px auto 14px;
+      padding: 14px 20px 22px;
+      border-top: 1px solid rgba(20, 17, 39, 0.08);
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .grid-3,
+      .process-grid,
+      .gallery {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .grid-2,
+      .comparison-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .facts-strip {
+        margin-top: 22px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      nav {
+        justify-content: flex-start;
+      }
+
+      .page,
+      footer {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .hero {
+        padding: 18px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .meta-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="nav-inner">
+      <div>
+        <div class="brand-name">Peter Chen</div>
+        <div class="brand-role">Bandit Breakout Case Study</div>
+      </div>
+
+      <nav aria-label="Case study navigation">
+        <a class="btn btn-soft" href="#overview">Overview</a>
+        <a class="btn btn-soft" href="#process">Process</a>
+        <a class="btn btn-soft" href="#solution">Solution</a>
+        <a class="btn btn-soft" href="#outcome">Outcome</a>
+        <a class="btn btn-soft" href="SchoolProjects.html">Project Page</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page">
+    <section aria-label="Bandit Breakout case study hero">
+      <div class="hero">
+        <span class="hero-kicker">BCIT · Large Project Case Study</span>
+        <p class="hero-intro">
+          Bandit Breakout is a realtime multiplayer browser game developed within a one-month academic project window.
+          The case study documents the research phase, the stack pivot away from a React and Next.js direction,
+          the shift to Phaser, and the delivery of a working host-and-join gameplay experience backed by Socket.IO,
+          Express, MongoDB, GridFS, and Redis.
+        </p>
+
+        <div class="hero-grid">
+          <div>
+            <h1>Bandit Breakout</h1>
+            <p class="section-subtitle" style="color: var(--text-muted); margin-bottom: 10px;">
+              Case study of a large school project covering research, technical direction, gameplay systems,
+              realtime synchronization, asset delivery, and final deployment.
+            </p>
+
+            <div class="pill-row" aria-label="Tech stack">
+              <span class="pill">Phaser 3</span>
+              <span class="pill">TypeScript</span>
+              <span class="pill">Socket.IO</span>
+              <span class="pill">Express</span>
+              <span class="pill">Redis</span>
+              <span class="pill">MongoDB</span>
+              <span class="pill">GridFS</span>
+              <span class="pill">Vite</span>
+            </div>
+
+            <div class="btn-row" style="margin-top: 14px;">
+              <a class="btn btn-primary" href="https://github.com/BB-CommandZ/BanditBreakout" target="_blank" rel="noreferrer">View Source</a>
+              <a class="btn btn-outline" href="http://commandz.gochatus.org:30006/" target="_blank" rel="noreferrer">Open Live Demo</a>
+              <a class="btn btn-outline" href="SchoolProjects.html">View Project Page</a>
+              <a class="btn btn-outline" href="portfolio.html#school-projects">Back to Portfolio</a>
+            </div>
+
+            <div class="meta-grid">
+              <div class="hero-panel">
+                <div class="meta-line">Role</div>
+                <div class="meta-value">Gameplay Systems and Realtime Implementation</div>
+              </div>
+              <div class="hero-panel">
+                <div class="meta-line">Scope</div>
+                <div class="meta-value">Stack research, asset delivery, board sync, movement logic, dice systems, deployment</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-shot">
+            <img src="game_s3.png" alt="Bandit Breakout gameplay screenshot showing the board and player pieces" />
+            <div class="hero-shot-caption">Final gameplay state used as the visual anchor for the deployed multiplayer demo.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="facts-strip" aria-label="Quick facts">
+      <div class="grid-3">
+        <div class="fact-card">
+          <div class="fact-label">Role</div>
+          <div class="fact-value">Gameplay Systems and Full Stack Support</div>
+          <div class="section-subtitle" style="margin-bottom: 0;">
+            Involved in stack evaluation, multiplayer synchronization, asset delivery strategy, dice-driven interactions,
+            movement logic, and final demo deployment.
+          </div>
+        </div>
+
+        <div class="fact-card">
+          <div class="fact-label">Project Frame</div>
+          <div class="fact-value">One-Month BCIT Term Project</div>
+          <div class="section-subtitle" style="margin-bottom: 0;">
+            Built as a large collaborative school project requiring research, technical direction, and a working final deliverable.
+          </div>
+        </div>
+
+        <div class="fact-card">
+          <div class="fact-label">Primary Deliverable</div>
+          <div class="fact-value">Realtime Multiplayer Browser Game</div>
+          <div class="section-subtitle" style="margin-bottom: 0;">
+            Players can host a room, join by code, select characters, move across the board in turns, and trigger battles in sync.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="overview" aria-label="Project overview">
+      <h2>Project Overview</h2>
+      <p class="section-subtitle">
+        This case study focuses on the project background, the central challenge, the process used to reach a workable direction,
+        and the technical systems that turned the idea into a live multiplayer build.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-kicker">Background</div>
+          <h3>Why this project counts as a large case study</h3>
+          <p>
+            Bandit Breakout required more than a single polished screen or a final video demo. The project demanded early research,
+            stack comparison, gameplay planning, multiplayer architecture, interface implementation, asset handling, server logic,
+            and final deployment. The result was not only a playable game, but also a complete record of how the project direction evolved.
+          </p>
+          <p>
+            The project combined several layers of work: front-end scene construction in Phaser, backend services in Express,
+            realtime event handling through Socket.IO, and a content pipeline capable of serving game assets from MongoDB and GridFS
+            with Redis helping reduce load delays.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Goal</div>
+          <h3>What the final build needed to achieve</h3>
+          <ul class="detail-list">
+            <li>Present a complete game loop instead of a disconnected prototype scene.</li>
+            <li>Allow one player to host a lobby and others to join through a short room code.</li>
+            <li>Keep all players synchronized during turns, movement, path choices, and battles.</li>
+            <li>Deliver a visually readable board experience with character selection, map movement, and battle feedback.</li>
+            <li>Deploy a working live demo within the class timeline.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Role and challenge overview">
+      <div class="section-banner">
+        <span class="eyebrow">Role Statement</span>
+        <h2 style="color: var(--ink-deep); margin-top: 14px;">Role and Scope at the start of the case study</h2>
+        <p style="margin-bottom: 0; color: var(--charcoal);">
+          Role: Gameplay Systems and Realtime Developer. Scope included technology research, stack comparison,
+          multiplayer board-state synchronization, path and movement logic, dice-based interactions, asset delivery workflow,
+          and final demo deployment. The work therefore covered both decision-making during the early planning stage and
+          implementation during the production stage.
+        </p>
+      </div>
+    </section>
+
+    <section id="challenge" aria-label="Challenge and constraints">
+      <h2>Challenge and Constraints</h2>
+      <p class="section-subtitle">
+        The central challenge was not only building the game, but choosing a stack that could support the idea within a short schedule.
+      </p>
+
+      <div class="comparison-grid">
+        <div class="card">
+          <div class="card-kicker">Initial Direction</div>
+          <h3>React and Next.js were the first research path</h3>
+          <p>
+            Early exploration covered several modern web stacks, with React and Next.js treated as the strongest initial option.
+            The attraction was clear: both tools offer strong component structure, a large ecosystem, and familiar front-end patterns.
+            For a content-heavy app or dashboard, that choice would likely have remained the leading direction.
+          </p>
+          <p>
+            However, Bandit Breakout was not primarily a document-based or route-based product. The core problem centered on a
+            realtime game board, active scene updates, character movement, turn sequencing, and responsive multiplayer feedback.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Constraint</div>
+          <h3>The one-month schedule forced a practical pivot</h3>
+          <p>
+            Once scope and timeline were reviewed together, React and Next.js began to look expensive for this specific project.
+            A large amount of effort would have gone into application scaffolding, game-state plumbing, custom rendering structure,
+            and animation workflow before the actual multiplayer board experience could mature.
+          </p>
+          <p>
+            Phaser offered a more direct route. It aligned with scene-based gameplay, sprite positioning, board interactions,
+            and rapid iteration. The stack pivot was therefore a production decision shaped by time, not a rejection of React itself.
+          </p>
+        </div>
+      </div>
+
+      <div class="quote-card" style="margin-top: 18px;">
+        The most important project decision was choosing a toolset that served the actual product shape. In this case,
+        the product was a realtime multiplayer game, so the stack had to reduce friction around gameplay rather than increase it.
+      </div>
+    </section>
+
+    <section id="process" aria-label="Process breakdown">
+      <h2>Process Breakdown</h2>
+      <p class="section-subtitle">
+        The project moved through a clear beginning, middle, and end: research, stack pivot, then feature delivery and deployment.
+      </p>
+
+      <div class="process-grid">
+        <div class="process-step">
+          <div class="step-number">01</div>
+          <h3>Research and stack comparison</h3>
+          <ul class="process-list">
+            <li>Reviewed multiple front-end directions before production work accelerated.</li>
+            <li>Evaluated React and Next.js as the first serious path because both were current, flexible, and widely supported.</li>
+            <li>Compared that route against the actual project requirement: a scene-heavy multiplayer game rather than a page-heavy app.</li>
+          </ul>
+        </div>
+
+        <div class="process-step">
+          <div class="step-number">02</div>
+          <h3>Production pivot and scope control</h3>
+          <ul class="process-list">
+            <li>Shifted the implementation strategy toward Phaser so the team could prioritize gameplay iteration earlier.</li>
+            <li>Reduced framework overhead and focused the project on lobbies, player turns, movement, and battles.</li>
+            <li>Matched technical choices to the one-month delivery window instead of chasing a broader web-app architecture.</li>
+          </ul>
+        </div>
+
+        <div class="process-step">
+          <div class="step-number">03</div>
+          <h3>Build, refine, and ship</h3>
+          <ul class="process-list">
+            <li>Implemented gameplay scenes, Socket.IO events, synchronized movement, and dice-driven battle triggers.</li>
+            <li>Built asset-serving support around MongoDB, GridFS, and Redis so the demo could load more reliably.</li>
+            <li>Validated the build through playtest capture and delivered a live deployed version.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline" style="margin-top: 18px;">
+        <div class="timeline-card">
+          <div class="timeline-kicker">Beginning</div>
+          <h3>Research defined the first direction</h3>
+          <p>
+            The opening phase centered on finding a suitable stack for the project. React and Next.js were explored because both frameworks support
+            structured component design and modern front-end development well. At this stage, the project still had room to become a more
+            app-like experience.
+          </p>
+        </div>
+
+        <div class="timeline-card">
+          <div class="timeline-kicker">Middle</div>
+          <h3>Phaser was selected to protect delivery speed</h3>
+          <p>
+            Once the schedule became a stronger constraint, the project direction narrowed. Phaser fit the board-game format better,
+            especially for visual movement, scene management, and immediate gameplay feedback. The middle phase therefore became a pivot
+            from framework exploration to game-specific implementation.
+          </p>
+        </div>
+
+        <div class="timeline-card">
+          <div class="timeline-kicker">End</div>
+          <h3>The final stage focused on sync, polish, and deployment</h3>
+          <p>
+            The later phase concentrated on features that made the experience feel complete: room hosting, joining by code,
+            board movement, path branching, battle events, and live demo deployment. The end result was a usable multiplayer build,
+            not just a concept document.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Visual process evidence">
+      <h2>Process Evidence</h2>
+      <p class="section-subtitle">
+        Existing project media helps show the transition from concept to a more complete game loop with lobby flow and board interaction.
+      </p>
+
+      <div class="gallery">
+        <figure class="shot">
+          <img src="game_s1.png" alt="Bandit Breakout screen capture showing an earlier game state" />
+          <figcaption>Early gameplay capture used to document the board state and basic interaction flow.</figcaption>
+        </figure>
+
+        <figure class="shot">
+          <img src="game_s2.png" alt="Bandit Breakout screen capture showing turn-based gameplay" />
+          <figcaption>Mid-stage build showing clearer player state, board movement, and turn-based interaction.</figcaption>
+        </figure>
+
+        <figure class="shot">
+          <img src="game_s3.png" alt="Bandit Breakout final gameplay capture showing a more complete board scene" />
+          <figcaption>Later-stage capture used to represent the more complete multiplayer experience.</figcaption>
+        </figure>
+
+        <figure class="shot shot-wide">
+          <video controls playsinline preload="metadata" poster="game_s1.png">
+            <source src="game_video.mp4" type="video/mp4" />
+            Embedded video is not supported by this browser.
+            <a href="game_video.mp4">Download the gameplay video</a>.
+          </video>
+          <figcaption>Playtest recording showing lobby setup, turn progression, and synchronized board interactions.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section aria-label="Gameplay concept">
+      <h2>Gameplay Concept</h2>
+      <p class="section-subtitle">
+        Rather than functioning as a static board mockup, the project aimed to support a complete multiplayer loop from lobby creation to final battle.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-kicker">Core Loop</div>
+          <h3>How the experience is structured</h3>
+          <ol class="feature-list">
+            <li>A host creates a room and receives a six-character game code.</li>
+            <li>Additional players join the same match through the code-based lobby flow.</li>
+            <li>Players select characters before the match begins.</li>
+            <li>Turns are advanced in order, with dice rolls driving board movement.</li>
+            <li>Fork tiles can interrupt movement and request an explicit route choice.</li>
+            <li>Tile collisions trigger battles, while the final board space leads to a boss encounter.</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Design Value</div>
+          <h3>Why this loop mattered to the case study</h3>
+          <p>
+            The gameplay loop created a useful frame for every technical decision. Lobby events had to feel fast enough to support group play.
+            Movement logic had to remain authoritative across connected clients. Branching path choices required state pauses and resumptions.
+            Battles had to read as game events rather than disconnected calculations.
+          </p>
+          <p>
+            Because the loop was clear, the project could be evaluated as a process: each system either supported the loop successfully or exposed
+            where more work was needed.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="solution" aria-label="Solution and technical implementation">
+      <h2>Solution</h2>
+      <p class="section-subtitle">
+        The final solution combined a game-oriented client stack with a realtime Node backend and a practical asset-serving strategy.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-kicker">Frontend</div>
+          <h3>Phaser became the right delivery tool</h3>
+          <ul class="detail-list">
+            <li>Phaser scenes organized the menus, lobby, map, and battle experiences in a way that matched the project structure naturally.</li>
+            <li>TypeScript supported clearer gameplay logic and scene coordination.</li>
+            <li>Vite handled local development and building without adding much friction to the workflow.</li>
+            <li>Scene-based rendering reduced the need to invent custom game abstractions on top of a more general web-app framework.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Backend</div>
+          <h3>Realtime game services supported multiplayer state</h3>
+          <ul class="detail-list">
+            <li>Express and Socket.IO provided the multiplayer communication layer.</li>
+            <li>Room creation and room joining were handled through code-based lobby events.</li>
+            <li>The server emitted shared state snapshots so every client could stay aligned.</li>
+            <li>Turn advancement, path choice prompts, and battle triggers were coordinated from the server side.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 18px;">
+        <div class="card">
+          <div class="card-kicker">Realtime Events</div>
+          <h3>Multiplayer consistency required clear event design</h3>
+          <ul class="detail-list">
+            <li><code>hostLobby</code>, <code>joinLobby</code>, and <code>startGame</code> supported the room flow.</li>
+            <li><code>gameState</code> snapshots were used to keep clients synchronized.</li>
+            <li><code>movePlayerDiceRoll</code> initiated server-authoritative board movement.</li>
+            <li><code>pathChoiceRequired</code> and <code>choosePath</code> handled branch decisions during movement.</li>
+            <li><code>battleStarted</code> and turn events provided gameplay feedback after collisions and combat triggers.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Asset Strategy</div>
+          <h3>Serving game assets needed a scalable but practical approach</h3>
+          <ul class="detail-list">
+            <li>Small assets were served through MongoDB-backed storage where direct document delivery was appropriate.</li>
+            <li>Larger files were streamed from GridFS when regular document delivery was not ideal.</li>
+            <li>Redis preload of key assets reduced repeated loading delays and improved responsiveness for critical files.</li>
+            <li>The asset route created a more manageable content pipeline for the deployed demo.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 18px;">
+        <div class="card">
+          <div class="card-kicker">Architecture</div>
+          <h3>System overview</h3>
+          <pre><code>Browser (Phaser 3)
+  |
+  |  room actions + gameplay events
+  v
+Socket.IO client
+  |
+  v
+Node / Express + Socket.IO
+  - host and join lobby
+  - start match
+  - move players by dice roll
+  - pause for fork choices
+  - trigger battles
+  - emit gameState snapshots
+  |
+  +-> Redis preload and cache
+  |
+  +-> MongoDB document storage
+  |
+  +-> GridFS streaming for large assets</code></pre>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Technical Reasoning</div>
+          <h3>Why the solution fit the project better than the original idea</h3>
+          <p>
+            The final architecture stayed close to the real problem. Phaser handled scenes and spatial interaction.
+            Socket.IO handled immediate multiplayer communication. Express provided a dependable HTTP and websocket foundation.
+            MongoDB, GridFS, and Redis supported the content side of the demo. Every major part of the solution answered a visible gameplay need.
+          </p>
+          <p>
+            That direct alignment is what made the stack pivot successful. The project stopped trying to behave like a general-purpose app
+            and instead became a game platform with supporting services.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Role contributions">
+      <h2>Role Contributions</h2>
+      <p class="section-subtitle">
+        The implementation role covered systems that were central to both the player experience and the technical stability of the build.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-kicker">Gameplay Systems</div>
+          <ul class="detail-list">
+            <li><strong>Board-state synchronization:</strong> contributed to keeping all connected players aligned through server snapshots and event-driven updates.</li>
+            <li><strong>Movement logic:</strong> implemented dice-based traversal on the board, including interruptions at route forks and continuation after player choice.</li>
+            <li><strong>Dice interactions:</strong> supported the core dice-driven pattern behind movement and battle events.</li>
+            <li><strong>Realtime feedback:</strong> helped the game communicate progression through movement, turn advancement, and battle-trigger events.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Infrastructure Support</div>
+          <ul class="detail-list">
+            <li><strong>Asset pipeline:</strong> supported a split storage strategy using MongoDB for smaller files and GridFS for larger files.</li>
+            <li><strong>Redis preload:</strong> helped improve access to critical assets during startup and repeated requests.</li>
+            <li><strong>Deployment validation:</strong> supported delivery of the live demo so the project could be reviewed as a functioning web-based game.</li>
+            <li><strong>Stack direction:</strong> contributed to the decision to prioritize Phaser once the time-cost of a React and Next.js route became clear.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="outcome" aria-label="Outcome and reflection">
+      <h2>Outcome and Reflection</h2>
+      <p class="section-subtitle">
+        The final deliverable demonstrates both a completed build and a documented decision-making process.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-kicker">Outcome</div>
+          <h3>What the project delivered</h3>
+          <ul class="outcome-list">
+            <li>A live multiplayer demo that could be hosted and joined through a short room code.</li>
+            <li>A complete board-game loop with turns, movement, route choices, collisions, and battle states.</li>
+            <li>A technical foundation covering gameplay scenes, websocket events, backend services, and asset delivery.</li>
+            <li>A stronger understanding of how stack choice affects schedule, iteration speed, and project scope.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Reflection</div>
+          <h3>What the case study shows most clearly</h3>
+          <ul class="outcome-list">
+            <li>Modern stacks are valuable, but the best choice depends on the product shape and available time.</li>
+            <li>Research was still useful even though the first direction was not the final one.</li>
+            <li>Phaser reduced implementation friction and allowed the project to emphasize gameplay over framework setup.</li>
+            <li>The strongest result was not perfection in every feature, but the delivery of a working multiplayer experience supported by a clear process story.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 18px;">
+        <div class="card-kicker">Next Iteration</div>
+        <h3>Areas that would benefit from a longer timeline</h3>
+        <ul class="outcome-list">
+          <li>Expanded playtesting and usability review across a wider set of players.</li>
+          <li>Additional balancing for battle pacing, event frequency, and progression flow.</li>
+          <li>More polished interface layers for tutorials, onboarding, and end-of-match feedback.</li>
+          <li>Further refinement of backend persistence and operational tooling for long-term multiplayer sessions.</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    &copy; <span id="year"></span> Peter Chen. All rights reserved.
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </footer>
+</body>
+</html>
