@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Strata Reserve Planning Case Study | Peter Chen</title>
+  <meta
+    name="description"
+    content="Case study for Strata Reserve Planning, a split full-stack TypeScript school project covering a React and Vite frontend, a Hono and Prisma backend, Supabase authentication, and role-based admin and client workflows."
+  />
+
+  <style>
+    :root {
+      --charcoal: #2f342d;
+      --ink-deep: #1f261d;
+      --night: #121610;
+      --olive: #6b8e5f;
+      --olive-dark: #4f6a46;
+      --olive-light: #dce7d5;
+      --accent: #fcef00;
+      --sand: #faf8ea;
+      --mist: #f6f6f1;
+      --paper: #ffffff;
+      --text-muted: #667063;
+      --border: #d9ddd2;
+      --border-strong: rgba(107, 142, 95, 0.28);
+      --shadow-soft: 0 14px 32px rgba(0, 0, 0, 0.08);
+      --shadow-deep: 0 24px 54px rgba(18, 22, 16, 0.18);
+      --radius: 18px;
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Times New Roman", Times, serif;
+      color: var(--charcoal);
+      line-height: 1.65;
+      background:
+        radial-gradient(circle at top left, rgba(107, 142, 95, 0.12), transparent 28%),
+        linear-gradient(180deg, #fcfcf8 0%, #fff 24%, #f7f8f3 100%);
+    }
+
+    a {
+      color: var(--olive-dark);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    img,
+    video {
+      max-width: 100%;
+      display: block;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: rgba(252, 252, 248, 0.92);
+      border-bottom: 1px solid rgba(31, 38, 29, 0.06);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-name {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-role {
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .page {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 24px 20px 72px;
+    }
+
+    section {
+      margin-top: 34px;
+      scroll-margin-top: 86px;
+    }
+
+    h1,
+    h2,
+    h3,
+    p,
+    ul,
+    ol,
+    pre {
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: 32px;
+      line-height: 1.1;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 19px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+      letter-spacing: 0.04em;
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .hero {
+      overflow: hidden;
+      border-radius: 26px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      color: var(--charcoal);
+      background:
+        radial-gradient(circle at top right, rgba(107, 142, 95, 0.16), transparent 30%),
+        linear-gradient(180deg, #fdfdf9 0%, #f8faef 52%, #f5f7ec 100%);
+      padding: 26px;
+    }
+
+    .hero-kicker,
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      border: 1px solid rgba(107, 142, 95, 0.34);
+      background: rgba(107, 142, 95, 0.12);
+      color: var(--ink-deep);
+    }
+
+    .hero-intro {
+      max-width: 720px;
+      color: rgba(47, 52, 45, 0.88);
+      margin-bottom: 0;
+    }
+
+    .hero-grid,
+    .grid-2,
+    .grid-3 {
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero-grid {
+      grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.9fr);
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card,
+    .fact-card,
+    .hero-panel,
+    .timeline-card,
+    .shot,
+    .process-step {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card,
+    .fact-card,
+    .timeline-card,
+    .process-step {
+      padding: 18px;
+    }
+
+    .hero-panel {
+      background: linear-gradient(180deg, #fff 0%, #f6f9ef 100%);
+      border-color: rgba(31, 38, 29, 0.08);
+      color: var(--charcoal);
+      padding: 16px;
+    }
+
+    .hero-panel p,
+    .hero-panel li,
+    .hero-panel .meta-line {
+      color: var(--text-muted);
+    }
+
+    .hero-shot {
+      background: linear-gradient(180deg, #fff 0%, #f6f8ef 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 12px;
+    }
+
+    .hero-shot img {
+      border-radius: 14px;
+      border: 1px solid rgba(31, 38, 29, 0.08);
+    }
+
+    .hero-shot-caption,
+    .caption {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 10px;
+    }
+
+    .pill-row,
+    .btn-row,
+    .fact-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill,
+    .stat-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid rgba(31, 38, 29, 0.08);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--charcoal);
+      white-space: nowrap;
+    }
+
+    .fact-list {
+      margin-top: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--olive);
+      color: #fff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: var(--charcoal);
+      border-color: var(--border);
+    }
+
+    .btn-soft {
+      background: #fff;
+      color: var(--charcoal);
+      border-color: var(--border);
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .meta-line {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+
+    .meta-value {
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .facts-strip {
+      margin-top: -18px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .fact-card {
+      background: linear-gradient(180deg, #fff 0%, #f9faf3 100%);
+    }
+
+    .fact-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .fact-value {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .feature-list,
+    .detail-list,
+    .process-list,
+    .outcome-list {
+      margin: 10px 0 0 18px;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .feature-list li,
+    .detail-list li,
+    .process-list li,
+    .outcome-list li {
+      margin-bottom: 8px;
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .step-number {
+      display: inline-flex;
+      width: 34px;
+      height: 34px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink-deep);
+      background: rgba(107, 142, 95, 0.18);
+      border: 1px solid var(--border-strong);
+      margin-bottom: 12px;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 14px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 18px;
+      top: 10px;
+      bottom: 10px;
+      width: 1px;
+      background: linear-gradient(180deg, rgba(107, 142, 95, 0.8), rgba(79, 106, 70, 0.4));
+    }
+
+    .timeline-card {
+      position: relative;
+      padding-left: 54px;
+      background: linear-gradient(180deg, #fff 0%, #fbfcf7 100%);
+    }
+
+    .timeline-card::before {
+      content: "";
+      position: absolute;
+      left: 13px;
+      top: 22px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--olive);
+      box-shadow: 0 0 0 5px rgba(107, 142, 95, 0.15);
+    }
+
+    .timeline-kicker,
+    .card-kicker {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .section-banner {
+      padding: 22px;
+      border-radius: 24px;
+      color: var(--charcoal);
+      background:
+        radial-gradient(circle at top right, rgba(107, 142, 95, 0.14), transparent 26%),
+        linear-gradient(180deg, #fff 0%, #f6f8ef 100%);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .comparison-grid,
+    .gallery {
+      display: grid;
+      gap: 14px;
+    }
+
+    .comparison-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gallery {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .shot {
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .shot img,
+    .shot video {
+      width: 100%;
+      height: auto;
+    }
+
+    .shot figcaption {
+      padding: 12px 14px 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .shot-wide {
+      grid-column: 1 / -1;
+    }
+
+    .quote-card {
+      padding: 18px;
+      border-left: 4px solid var(--olive);
+      background: linear-gradient(180deg, #fcfdf8 0%, #f4f7ee 100%);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      font-size: 15px;
+    }
+
+    pre {
+      margin-bottom: 0;
+      padding: 14px;
+      overflow: auto;
+      border-radius: 14px;
+      background: #20281d;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #f4f7ed;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    footer {
+      max-width: var(--max-width);
+      margin: 46px auto 14px;
+      padding: 14px 20px 22px;
+      border-top: 1px solid rgba(31, 38, 29, 0.08);
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .grid-3,
+      .process-grid,
+      .gallery {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .grid-2,
+      .comparison-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .facts-strip {
+        margin-top: 22px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      nav {
+        justify-content: flex-start;
+      }
+
+      .page,
+      footer {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .hero {
+        padding: 18px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .meta-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="nav-inner">
+      <div>
+        <div class="brand-name">Peter Chen</div>
+        <div class="brand-role">Strata Reserve Planning Case Study</div>
+      </div>
+
+      <nav aria-label="Case study navigation">
+        <a class="btn btn-soft" href="#overview">Overview</a>
+        <a class="btn btn-soft" href="#process">Process</a>
+        <a class="btn btn-soft" href="#solution">Solution</a>
+        <a class="btn btn-soft" href="#outcome">Outcome</a>
+        <a class="btn btn-soft" href="portfolio.html#school-projects">Back to Portfolio</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page">
+    <section aria-label="Strata Reserve Planning case study hero">
+      <div class="hero">
+        <span class="hero-kicker">BCIT · Full-Stack Case Study</span>
+        <p class="hero-intro">
+          Strata Reserve Planning is a split full-stack TypeScript portal built around a role-based workflow for managing strata data collection,
+          required documents, surveys, timelines, appointment booking, and administrative review. This case study focuses on how the frontend and backend
+          were structured together so the portal could support both internal staff and client-facing tasks in one coordinated system.
+        </p>
+
+        <div class="hero-grid">
+          <div>
+            <h1>Strata Reserve Planning</h1>
+            <p class="section-subtitle" style="color: var(--text-muted); margin-bottom: 10px;">
+              Case study of a school project covering a React and Vite frontend, a Hono API, Prisma data modeling,
+              Supabase authentication, and two parallel product experiences for admins and clients.
+            </p>
+
+            <div class="pill-row" aria-label="Tech stack">
+              <span class="pill">React</span>
+              <span class="pill">Vite</span>
+              <span class="pill">TypeScript</span>
+              <span class="pill">SCSS</span>
+              <span class="pill">Hono</span>
+              <span class="pill">Prisma</span>
+              <span class="pill">PostgreSQL</span>
+              <span class="pill">Supabase</span>
+            </div>
+
+            <div class="btn-row" style="margin-top: 14px;">
+              <a class="btn btn-primary" href="docs/ARCHITECTURE.md">Architecture Notes</a>
+              <a class="btn btn-outline" href="frontend/README.md">Frontend Notes</a>
+              <a class="btn btn-outline" href="SchoolProjects.html">View Project Page</a>
+              <a class="btn btn-outline" href="portfolio.html#school-projects">Back to Portfolio</a>
+            </div>
+
+            <div class="meta-grid">
+              <div class="hero-panel">
+                <div class="meta-line">Role</div>
+                <div class="meta-value">Full-Stack Product and Workflow Implementation</div>
+              </div>
+              <div class="hero-panel">
+                <div class="meta-line">Scope</div>
+                <div class="meta-value">Role-based routing, admin and client dashboards, API design, Prisma schema, auth, and workflow integration</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-shot">
+            <img src="dashboard_expected.png" alt="Target admin dashboard for the Strata Reserve Planning portal" />
+            <div class="hero-shot-caption">Dashboard target used as the visual anchor for the case study and for the overall product direction.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="facts-strip" aria-label="Quick facts">
+      <div class="grid-3">
+        <div class="fact-card">
+          <div class="fact-label">Role</div>
+          <div class="fact-value">Frontend and Backend Delivery</div>
+          <div class="section-subtitle" style="margin-bottom: 0;">
+            The project work spans the React client, the Hono API, the Prisma schema, and the role-based workflow that connects them.
+          </div>
+        </div>
+
+        <div class="fact-card">
+          <div class="fact-label">Project Frame</div>
+          <div class="fact-value">Split Full-Stack TypeScript School Project</div>
+          <div class="section-subtitle" style="margin-bottom: 0;">
+            The repository is organized into separate frontend and backend applications with shared project documentation and a multi-step business workflow.
+          </div>
+        </div>
+
+        <div class="fact-card">
+          <div class="fact-label">Primary Deliverable</div>
+          <div class="fact-value">Role-Based Data Collection Portal</div>
+          <div class="section-subtitle" style="margin-bottom: 0;">
+            Admin users manage strata records, appointments, reviews, and questions while clients complete surveys, upload documents, and book inspections.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="overview" aria-label="Project overview">
+      <h2>Project Overview</h2>
+      <p class="section-subtitle">
+        This case study focuses on how the project was structured as a real product rather than a disconnected set of CRUD screens,
+        with the frontend and backend both shaped around the same reserve-planning workflow.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-kicker">Background</div>
+          <h3>Why this project reads as a full system instead of a single page</h3>
+          <p>
+            Strata Reserve Planning is organized around two different user experiences. Admin users need a dashboard for urgent actions,
+            appointment requests, document review, question management, timelines, strata records, and user management. Clients need a guided portal
+            for profile setup, section-specific survey questions, required document uploads, timeline milestones, appointment booking, and status updates.
+          </p>
+          <p>
+            That meant the work could not stop at interface mockups. The project required route protection, authentication state handling,
+            API contracts, database relationships, service logic, email and notification hooks, and a data model capable of connecting profiles,
+            strata, files, property types, appointments, surveys, and documents.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Goal</div>
+          <h3>What the final build needed to achieve</h3>
+          <ul class="detail-list">
+            <li>Support separate admin and client route groups without duplicating the entire application shell.</li>
+            <li>Use Supabase authentication while still enforcing backend authorization through middleware and database-backed role checks.</li>
+            <li>Let clients move through a sequence of tasks: strata information, survey answers, document submission, timelines, and booking.</li>
+            <li>Give admins tools to review incoming work, monitor urgent items, manage appointments, and maintain reference data.</li>
+            <li>Keep the schema and API consistent enough that the frontend could rely on reusable hooks and shared utility code.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Role and challenge overview">
+      <div class="section-banner">
+        <span class="eyebrow">Role Statement</span>
+        <h2 style="color: var(--ink-deep); margin-top: 14px;">Role and Scope at the center of the case study</h2>
+        <p style="margin-bottom: 0; color: var(--charcoal);">
+          Role: full-stack implementation across both product surfaces. Scope included route structure, auth flow, admin and client dashboards,
+          data-fetching hooks, API namespaces, Prisma modeling, and the workflow logic needed to connect surveys, documents, appointment booking,
+          notifications, and review actions into one coherent system.
+        </p>
+      </div>
+    </section>
+
+    <section id="challenge" aria-label="Challenge and constraints">
+      <h2>Challenge and Constraints</h2>
+      <p class="section-subtitle">
+        The main difficulty was coordinating business workflow, authorization, and data relationships across two interfaces without turning the codebase into a tangle of one-off screens.
+      </p>
+
+      <div class="comparison-grid">
+        <div class="card">
+          <div class="card-kicker">Frontend Challenge</div>
+          <h3>Two user roles needed different tools but one application foundation</h3>
+          <p>
+            The frontend could not be treated as a single dashboard with a few conditional buttons. The admin experience includes pages for dashboards,
+            users, strata, timelines, questions, documents, and appointments. The client experience includes guided pages for strata information,
+            strata members, documents, surveys, timelines, and inspection booking. Both sit inside the same React application and share auth state,
+            utility code, API access, and reusable components.
+          </p>
+          <p>
+            The challenge was therefore architectural: route groups, layouts, and hooks had to be organized so the product felt like one system,
+            not two disconnected apps living beside each other.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Backend Challenge</div>
+          <h3>The API had to mirror the workflow rather than expose raw tables</h3>
+          <p>
+            On the backend, the project needed more than generic CRUD handlers. The Hono API is split into shared, admin, and client namespaces.
+            Middleware validates Supabase bearer tokens, checks admin privileges through Prisma, and then routes each request into controllers and services
+            that understand appointments, property type changes, activation requests, review state, and client progress.
+          </p>
+          <p>
+            That meant the data model had to hold together under real workflow pressure. Profiles, strata, file numbers, documents, questions,
+            survey responses, notifications, and appointment records all needed clear relationships instead of ad hoc joins scattered across the UI.
+          </p>
+        </div>
+      </div>
+
+      <div class="quote-card" style="margin-top: 18px;">
+        The hardest part of the project was not drawing another dashboard card. It was making the product behave like a complete workflow,
+        where admin review, client input, auth checks, and database state all point in the same direction.
+      </div>
+    </section>
+
+    <section id="process" aria-label="Process breakdown">
+      <h2>Process Breakdown</h2>
+      <p class="section-subtitle">
+        The work moved through three connected phases: define the workflow, shape the frontend around role-specific routes, then build the backend and schema that made those routes useful.
+      </p>
+
+      <div class="process-grid">
+        <div class="process-step">
+          <div class="step-number">01</div>
+          <h3>Model the product workflow</h3>
+          <ul class="process-list">
+            <li>Mapped the portal around two main actors: admin staff and client users.</li>
+            <li>Defined the main stages of the file lifecycle: setup, survey, document collection, timelines, appointment handling, and review.</li>
+            <li>Used that workflow to guide both the React route map and the Prisma schema instead of designing the frontend and backend separately.</li>
+          </ul>
+        </div>
+
+        <div class="process-step">
+          <div class="step-number">02</div>
+          <h3>Build the frontend shell and role-based navigation</h3>
+          <ul class="process-list">
+            <li>Composed public, admin, and client route groups under one React application using protected routes and shared layouts.</li>
+            <li>Centralized auth session handling in the shared context so both product areas could use the same identity state.</li>
+            <li>Built reusable hooks and shared components so data-heavy pages did not each reinvent API logic, tables, modals, and status UI.</li>
+          </ul>
+        </div>
+
+        <div class="process-step">
+          <div class="step-number">03</div>
+          <h3>Wire the backend, schema, and workflow services</h3>
+          <ul class="process-list">
+            <li>Split the Hono API into admin, client, and shared namespaces with middleware guarding access.</li>
+            <li>Connected controllers to shared service modules for appointments, timelines, notifications, documents, questions, and profile updates.</li>
+            <li>Used Prisma and PostgreSQL to model the business entities that both sides of the app depend on.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline" style="margin-top: 18px;">
+        <div class="timeline-card">
+          <div class="timeline-kicker">Beginning</div>
+          <h3>The early phase established the product shape</h3>
+          <p>
+            The repository was structured as a split full-stack project with separate frontend and backend folders. From that point, the core job was to turn
+            reserve-planning tasks into a route map, an API surface, and a data model that described the same workflow consistently.
+          </p>
+        </div>
+
+        <div class="timeline-card">
+          <div class="timeline-kicker">Middle</div>
+          <h3>The middle phase focused on role-specific product behavior</h3>
+          <p>
+            The React app grew into distinct admin and client experiences with protected routes, reusable layouts, and hooks that wrapped authenticated API calls.
+            At the same time, the backend expanded into feature-specific controllers and services so the UI could work with meaningful business endpoints.
+          </p>
+        </div>
+
+        <div class="timeline-card">
+          <div class="timeline-kicker">End</div>
+          <h3>The later phase concentrated on integration and workflow coverage</h3>
+          <p>
+            The final shape of the project shows how the pieces connect: dashboards summarize live work, document and survey flows update progress,
+            booking logic supports appointment handling, and backend middleware plus Prisma relations keep those actions tied to real user roles and records.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Visual process evidence">
+      <h2>Process Evidence</h2>
+      <p class="section-subtitle">
+        The project already includes dashboard captures that make the product direction easy to read: the current build and the more complete target state.
+      </p>
+
+      <div class="comparison-grid">
+        <figure class="shot">
+          <img src="dashboard_current.png" alt="Current admin dashboard build for the portal" />
+          <figcaption>Current admin dashboard state in the repository, showing the working shell, summary cards, navigation, and primary workflow sections.</figcaption>
+        </figure>
+
+        <figure class="shot">
+          <img src="dashboard_expected.png" alt="Expected admin dashboard direction for the portal" />
+          <figcaption>Target dashboard direction used to represent the more complete workflow vision, with urgent actions, appointments, and recent activity surfaced more clearly.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section aria-label="Product workflow">
+      <h2>Product Workflow</h2>
+      <p class="section-subtitle">
+        The project is easiest to understand as a workflow system rather than as a loose set of pages.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-kicker">Client Flow</div>
+          <h3>How the client-facing side is structured</h3>
+          <ol class="feature-list">
+            <li>A client signs in through Supabase-backed authentication and lands on a progress dashboard.</li>
+            <li>The dashboard pulls together timelines, survey completion, document counts, notifications, and appointment state.</li>
+            <li>The client can review strata information, manage strata members, answer section-based survey questions, and upload required documents.</li>
+            <li>Timeline fields and document review results feed back into progress and modal prompts.</li>
+            <li>When eligible, the client can request or respond to inspection booking and later see finalized outcomes.</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Admin Flow</div>
+          <h3>How the internal side supports review and coordination</h3>
+          <p>
+            The admin portal is designed around work that needs attention now. The dashboard brings together urgent property type requests,
+            activation requests, appointment requests, rebooking needs, upcoming appointments, and recent profile activity. Beyond the dashboard,
+            admins can manage users, strata, documents, questions, timelines, and appointment operations.
+          </p>
+          <p>
+            That makes the admin side more than a maintenance console. It is the operational surface that advances client files through the workflow,
+            reviews submissions, assigns appointments, and keeps the system data accurate.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="solution" aria-label="Solution and technical implementation">
+      <h2>Solution</h2>
+      <p class="section-subtitle">
+        The final solution keeps the frontend and backend deliberately separate in code structure, while linking them through shared roles, shared workflow language, and authenticated API contracts.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-kicker">Frontend</div>
+          <h3>React and Vite organize the portal into product surfaces</h3>
+          <ul class="detail-list">
+            <li><strong>App composition:</strong> `App.tsx` mounts public, admin, and client route groups under one router and one auth provider.</li>
+            <li><strong>Protected routes:</strong> admin and client pages are wrapped by `ProtectedRoute`, allowing the UI to branch by role while keeping the entry point clean.</li>
+            <li><strong>Role-based layouts:</strong> `AdminLayout` and `ClientLayout` give each side its own navigation and screen structure without splitting the app into separate deployments.</li>
+            <li><strong>Reusable hooks:</strong> hooks such as `useAppointments`, `useClientDocuments`, `useSurvey`, `useTimelines`, and `useNotifications` keep page components focused on product logic instead of raw fetch code.</li>
+            <li><strong>Shared UI system:</strong> tables, tabs, modals, form fields, toasts, and utility helpers are centralized under `shared/` so the project does not repeat itself across pages.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Backend</div>
+          <h3>Hono, Prisma, and services drive the workflow API</h3>
+          <ul class="detail-list">
+            <li><strong>Server bootstrap:</strong> the Hono app mounts shared, admin, and client routes after logger and CORS middleware, with a simple health endpoint at `/health`.</li>
+            <li><strong>Auth boundary:</strong> `authMiddleware` validates Supabase bearer tokens, and `adminMiddleware` confirms admin privileges through Prisma before protected admin routes run.</li>
+            <li><strong>Feature routing:</strong> route files cover appointments, documents, questions, strata, users, timelines, notifications, activation requests, and survey-related flows.</li>
+            <li><strong>Service layer:</strong> shared services centralize business logic for appointments, documents, timelines, file numbers, notifications, profiles, and question workflows.</li>
+            <li><strong>Data layer:</strong> Prisma connects the backend to PostgreSQL using a schema that models profiles, strata, property types, sections, file numbers, surveys, appointments, documents, and notifications.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 18px;">
+        <div class="card">
+          <div class="card-kicker">Auth and Session</div>
+          <h3>Supabase handles identity while the app keeps role logic local</h3>
+          <ul class="detail-list">
+            <li>The frontend `AuthContext` reads the Supabase session, loads the user profile, and converts raw profile rows into app-level admin, inspector, assistant, or client user objects.</li>
+            <li>The backend verifies each bearer token independently through Supabase before it trusts any request.</li>
+            <li>Admin authorization is not inferred from the frontend alone; it is checked again through Prisma by reading the user type from the database.</li>
+            <li>This pattern lets the UI stay responsive while still treating the API as the real trust boundary.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Data Model</div>
+          <h3>The Prisma schema is organized around real business entities</h3>
+          <ul class="detail-list">
+            <li>`Profile`, `Strata`, `StrataProfile`, and `FileNumber` establish the base relationship between people, organizations, and active files.</li>
+            <li>Lookup tables such as `PropertyType`, `Section`, `Service`, and `QuestionCategory` support flexible configuration.</li>
+            <li>Survey and document work is represented through question, response, and file-number requirement tables instead of hard-coded frontend assumptions.</li>
+            <li>Appointment and notification records connect workflow events back to actual users and files.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 18px;">
+        <div class="card">
+          <div class="card-kicker">Architecture</div>
+          <h3>System overview</h3>
+          <pre><code>Browser SPA (React + Vite)
+  |
+  |  authenticated requests
+  v
+AuthContext + shared hooks
+  |
+  v
+Hono API
+  - /api/lookups/*
+  - /admin/*
+  - /client/*
+  |
+  +-> authMiddleware (Supabase token validation)
+  +-> adminMiddleware (Prisma role check for admin routes)
+  |
+  v
+Controllers -> Shared Services -> Prisma
+  |
+  v
+PostgreSQL
+  - profiles
+  - strata
+  - file numbers
+  - documents
+  - survey questions and responses
+  - appointments
+  - notifications</code></pre>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Technical Reasoning</div>
+          <h3>Why this structure fits the project</h3>
+          <p>
+            The strongest architectural choice in the repository is the decision to separate by role and by responsibility at the same time.
+            The frontend is divided into admin, client, and shared areas. The backend is divided into admin, client, and shared routes and services.
+            The data model sits underneath those layers as the common source of truth. That shape keeps the system easier to reason about because each side of the app can evolve around its own workflow without losing a shared foundation.
+          </p>
+          <p>
+            In practical terms, that means a dashboard card, an appointment review modal, and a client booking flow are not isolated features.
+            They all connect back to the same route boundaries, service logic, and relational data model.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Role contributions">
+      <h2>Role Contributions</h2>
+      <p class="section-subtitle">
+        The case study is strongest when treated as end-to-end workflow work rather than as separate frontend and backend tasks.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-kicker">Frontend Contributions</div>
+          <ul class="detail-list">
+            <li><strong>Route and layout structure:</strong> organized the React app so public, admin, and client surfaces can coexist cleanly.</li>
+            <li><strong>Dashboard behavior:</strong> supported dashboards that summarize operational state rather than only displaying static cards.</li>
+            <li><strong>Workflow pages:</strong> connected client-facing pages for documents, surveys, timelines, strata information, and booking into a guided flow.</li>
+            <li><strong>Reusable UI and hooks:</strong> leaned on shared components, modals, and data hooks so the product could scale beyond a single screen.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Backend Contributions</div>
+          <ul class="detail-list">
+            <li><strong>API organization:</strong> structured the Hono server into role-aware route groups instead of a flat endpoint list.</li>
+            <li><strong>Authorization:</strong> tied Supabase auth and Prisma role checks together so backend permissions do not depend on frontend trust.</li>
+            <li><strong>Service-oriented logic:</strong> supported business workflows through shared services for appointments, notifications, timelines, documents, profiles, and questions.</li>
+            <li><strong>Schema design:</strong> used Prisma models to capture the relationships that the portal depends on rather than leaving those joins to ad hoc frontend logic.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="outcome" aria-label="Outcome and reflection">
+      <h2>Outcome and Reflection</h2>
+      <p class="section-subtitle">
+        The resulting project is valuable because it shows an application that is already thinking in terms of product workflow, permissions, and data integrity instead of only isolated page output.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-kicker">Outcome</div>
+          <h3>What the project delivered</h3>
+          <ul class="outcome-list">
+            <li>A split full-stack architecture with a React and Vite frontend and a Hono and Prisma backend.</li>
+            <li>Role-based admin and client experiences built on a shared authentication and routing foundation.</li>
+            <li>A portal workflow covering surveys, documents, timelines, notifications, and appointment handling.</li>
+            <li>A database-backed API surface that reflects business processes instead of exposing unstructured table access.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Reflection</div>
+          <h3>What the case study shows most clearly</h3>
+          <ul class="outcome-list">
+            <li>Frontend and backend structure matter most when multiple user roles depend on the same data in different ways.</li>
+            <li>Auth is not only a login feature; it shapes route design, middleware, API boundaries, and the user model itself.</li>
+            <li>A strong schema reduces guesswork in the UI because the workflow entities already exist in stable relationships.</li>
+            <li>The project reads best as a system integration exercise: user journey, permissions, services, and data all had to align.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 18px;">
+        <div class="card-kicker">Next Iteration</div>
+        <h3>Areas that would benefit from a longer timeline</h3>
+        <ul class="outcome-list">
+          <li>More polished dashboard refinement so the current build closes the gap with the stronger target layout already documented in the screenshots.</li>
+          <li>Broader automated test coverage for route protection, workflow edge cases, and service-layer business rules.</li>
+          <li>Further reporting and analytics features so the portal can surface project health beyond task completion and pending review counts.</li>
+          <li>Continued cleanup of shared types and route contracts as the product expands to more internal roles and more finished client outputs.</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    &copy; <span id="year"></span> Peter Chen. All rights reserved.
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </footer>
+</body>
+</html>
